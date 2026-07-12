@@ -1,0 +1,251 @@
+---
+import Layout from '../layouts/Layout.astro';
+import albumCover from '../assets/album_photos/First Look.png';
+---
+
+<Layout title="Music — Cleanice" description="Cleanice — ню-метал. Дебютный альбом First Look.">
+  <section class="music-hero">
+    <div class="section-container">
+      <p class="music-hero__label anim-fade-up delay-1">Discography</p>
+      <h1 class="music-hero__title anim-blur-in delay-2">Music</h1>
+    </div>
+  </section>
+
+  <section class="releases">
+    <div class="section-container">
+      <div class="releases__header reveal">
+        <h2 class="section-title">Releases</h2>
+        <div class="releases__filter" role="group" aria-label="Filter releases">
+          <button class="filter-btn filter-btn--active" aria-pressed="true">All</button>
+          <button class="filter-btn" aria-pressed="false">Albums</button>
+          <button class="filter-btn" aria-pressed="false">Singles</button>
+        </div>
+      </div>
+
+      <div class="releases__grid">
+        <article class="release-card release-card--featured reveal" style="--i:0">
+          <div class="release-card__cover">
+            <img src={albumCover.src} alt="First Look — Cleanice" class="release-card__artwork-img" />
+            <div class="release-card__overlay">
+              <button class="release-card__play" aria-label="Play">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="release-card__info">
+            <span class="release-card__type">Album</span>
+            <h3 class="release-card__title">First Look</h3>
+            <p class="release-card__date">2026 — Debut album</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .section-title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: 2.2rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Music Hero */
+  .music-hero {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    padding-top: 6rem;
+    text-align: center;
+  }
+
+  .music-hero__label {
+    font-size: .75rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .music-hero__title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+
+  /* Releases */
+  .releases {
+    padding: 4rem 0 6rem;
+  }
+
+  .releases__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .releases__filter {
+    display: flex;
+    gap: .5rem;
+  }
+
+  .filter-btn {
+    padding: .5rem 1rem;
+    font-family: var(--font-sans);
+    font-size: .8rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-btn);
+    cursor: pointer;
+    transition: all .3s ease-out;
+    letter-spacing: 0.04em;
+  }
+
+  .filter-btn:hover {
+    color: var(--primary);
+  }
+
+  .filter-btn--active {
+    color: var(--primary);
+    border-color: var(--border);
+    background: rgba(255,255,255,.03);
+  }
+
+  .releases__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Release Card */
+  .release-card {
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all .35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .release-card:hover {
+    background: rgba(255,255,255,.04);
+    border-color: rgba(255,255,255,.12);
+    transform: translateY(-4px);
+    box-shadow: 0 0 10px rgba(255,255,255,.08), 0 0 30px rgba(255,255,255,.04);
+  }
+
+  .release-card__cover {
+    aspect-ratio: 1;
+    background: rgba(255,255,255,.03);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .release-card__artwork-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s cubic-bezier(.22,1,.36,1);
+  }
+
+  .release-card:hover .release-card__artwork-img {
+    transform: scale(1.05);
+  }
+
+  .release-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .3s ease-out;
+  }
+
+  .release-card:hover .release-card__overlay {
+    opacity: 1;
+  }
+
+  .release-card__play {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.22,1,.36,1);
+    backdrop-filter: blur(10px);
+  }
+
+  .release-card__play:hover {
+    background: rgba(255,255,255,.2);
+    box-shadow: 0 0 20px rgba(255,255,255,.2);
+    transform: scale(1.1);
+  }
+
+  .release-card__play svg {
+    margin-left: 2px;
+  }
+
+  .release-card__info {
+    padding: 1.5rem;
+  }
+
+  .release-card__type {
+    font-size: .7rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .release-card__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    margin: .5rem 0;
+  }
+
+  .release-card__date {
+    font-size: .8rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .release-card--featured {
+    grid-column: 1 / -1;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .release-card--featured .release-card__cover {
+    aspect-ratio: 1;
+  }
+
+  @media (max-width: 768px) {
+    .releases__header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

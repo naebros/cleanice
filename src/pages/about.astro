@@ -1,0 +1,310 @@
+---
+import Layout from '../layouts/Layout.astro';
+import albumCover from '../assets/album_photos/First Look.png';
+---
+
+<Layout title="About — Cleanice" description="Cleanice — ню-метал группа. Дебютный альбом First Look.">
+  <section class="about-hero">
+    <div class="section-container">
+      <p class="about-hero__label anim-fade-up delay-1">Who we are</p>
+      <h1 class="about-hero__title anim-blur-in delay-2">About<br/>Cleanice</h1>
+      <p class="about-hero__sub anim-fade-up delay-3">
+        Ню-метал. Контраст. Чистота.
+      </p>
+    </div>
+  </section>
+
+  <section class="about-story">
+    <div class="section-container">
+      <div class="about-story__grid">
+        <div class="about-story__text reveal">
+          <h2 class="section-title">The Story</h2>
+          <p>
+            Cleanice — ню-метал команда, которая строит звук на контрасте тяжести и чистоты. Мы берём агрессию жанра и пропускаем её через призму минимализма.
+          </p>
+          <p>
+            Сейчас мы работаем над дебютным альбомом <strong>"First Look"</strong> — это наш первый взгляд на то, как должен звучать ню-метал в 2026-м. Жёстко, но чисто. Громко, но с пространством.
+          </p>
+        </div>
+        <div class="about-story__visual reveal" style="transition-delay:.15s">
+          <div class="about-story__frame">
+            <img src={albumCover.src} alt="First Look — Cleanice" class="about-story__album" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-values">
+    <div class="section-container">
+      <h2 class="section-title reveal">What Drives Us</h2>
+      <div class="values-grid">
+        <div class="value-card reveal" style="--i:0">
+          <span class="value-card__number">01</span>
+          <h3 class="value-card__title">Контраст</h3>
+          <p class="value-card__text">Тяжесть и чистота. Шум и тишина. Мы живём на границе двух крайностей.</p>
+        </div>
+        <div class="value-card reveal" style="--i:1;transition-delay:.1s">
+          <span class="value-card__number">02</span>
+          <h3 class="value-card__title">Энергия</h3>
+          <p class="value-card__text">Ню-метал — это движение. Каждый трек должен заставить тело реагировать.</p>
+        </div>
+        <div class="value-card reveal" style="--i:2;transition-delay:.2s">
+          <span class="value-card__number">03</span>
+          <h3 class="value-card__title">Чистота</h3>
+          <p class="value-card__text">Cleanice — не просто название. Мы фильтруем звук до самого essential.</p>
+        </div>
+        <div class="value-card reveal" style="--i:3;transition-delay:.3s">
+          <span class="value-card__number">04</span>
+          <h3 class="value-card__title">Свежесть</h3>
+          <p class="value-card__text">Первый альбом — первый взгляд. Мы не копируем, мы создаём свой звук.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-members">
+    <div class="section-container">
+      <h2 class="section-title reveal">Members</h2>
+      <div class="members-grid">
+        <div class="member-card reveal" style="--i:0">
+          <div class="member-card__photo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3 class="member-card__name">Senu O</h3>
+          <p class="member-card__role">Vocals / Guitar / Frontman / DJ</p>
+        </div>
+        <div class="member-card reveal" style="--i:1;transition-delay:.1s">
+          <div class="member-card__photo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3 class="member-card__name">Nikita A</h3>
+          <p class="member-card__role">Keys</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-quote">
+    <div class="section-container">
+      <blockquote class="about-quote__text reveal--blur">
+        "We don't make music to fill silence.<br/>We make silence to fill music."
+      </blockquote>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .section-title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: 2.2rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 3rem;
+  }
+
+  /* About Hero */
+  .about-hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding-top: 6rem;
+    text-align: center;
+  }
+
+  .about-hero__label {
+    font-size: .75rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-hero__title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-hero__sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Story */
+  .about-story {
+    padding: 6rem 0;
+  }
+
+  .about-story__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-story__text p {
+    font-size: .95rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-story__frame {
+    aspect-ratio: 1;
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .about-story__album {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Values */
+  .about-values {
+    padding: 6rem 0;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .value-card {
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    transition: all .35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .value-card:hover {
+    background: rgba(255,255,255,.04);
+    border-color: rgba(255,255,255,.12);
+    box-shadow: 0 0 10px rgba(255,255,255,.08);
+  }
+
+  .value-card__number {
+    font-family: var(--font-serif);
+    font-size: .85rem;
+    color: rgba(255,255,255,.2);
+    letter-spacing: 0.1em;
+  }
+
+  .value-card__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+    margin: .75rem 0;
+  }
+
+  .value-card__text {
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* Members */
+  .about-members {
+    padding: 6rem 0;
+  }
+
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .member-card {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    transition: all .35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .member-card:hover {
+    background: rgba(255,255,255,.04);
+    box-shadow: 0 0 10px rgba(255,255,255,.08);
+  }
+
+  .member-card__photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: rgba(255,255,255,.2);
+  }
+
+  .member-card__name {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    margin-bottom: .5rem;
+  }
+
+  .member-card__role {
+    font-size: .8rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+  }
+
+  /* Quote */
+  .about-quote {
+    padding: 6rem 0;
+    text-align: center;
+  }
+
+  .about-quote__text {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .about-story__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .members-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

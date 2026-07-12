@@ -1,0 +1,393 @@
+---
+import Layout from '../layouts/Layout.astro';
+import albumCover from '../assets/album_photos/First Look.png';
+---
+
+<Layout title="Cleanice">
+  <section class="hero">
+    <div class="hero__glow"></div>
+    <div class="hero__content">
+      <p class="hero__label anim-fade-up delay-1">New album out now</p>
+      <h1 class="hero__title anim-blur-in delay-3">
+        <span class="hero__title-letter">C</span><span class="hero__title-letter">l</span><span class="hero__title-letter">e</span><span class="hero__title-letter">a</span><span class="hero__title-letter">n</span><span class="hero__title-letter">i</span><span class="hero__title-letter">c</span><span class="hero__title-letter">e</span>
+      </h1>
+      <p class="hero__sub anim-fade-up delay-5">Nü metal. First Look — debut album 2026</p>
+      <div class="hero__actions anim-fade-up delay-6">
+        <a href="/music" class="btn btn--primary">Listen now</a>
+        <a href="/about" class="btn btn--ghost">About us</a>
+      </div>
+    </div>
+    <div class="hero__scroll anim-fade-in delay-8">
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="featured">
+    <div class="section-container">
+      <div class="featured__grid">
+        <a href="/music" class="card reveal">
+          <div class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5.5" cy="17.5" r="2.5"/>
+              <circle cx="17.5" cy="15.5" r="2.5"/>
+              <path d="M8 17V5l12-2v12"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Latest Release</h3>
+          <p class="card__text">Explore our discography and find your next favorite track.</p>
+          <span class="card__arrow">&rarr;</span>
+        </a>
+        <a href="/about" class="card reveal" style="transition-delay:.1s">
+          <div class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="card__title">About Us</h3>
+          <p class="card__text">The story behind the sound. Who we are and what drives us.</p>
+          <span class="card__arrow">&rarr;</span>
+        </a>
+        <div class="card reveal" style="transition-delay:.2s">
+          <div class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+              <line x1="4" y1="22" x2="4" y2="15"/>
+            </svg>
+          </div>
+          <h3 class="card__title">Live</h3>
+          <p class="card__text">Upcoming shows and events. Experience the energy firsthand.</p>
+          <span class="card__arrow">&rarr;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="section-container">
+      <div class="cta__inner reveal--blur">
+        <h2 class="cta__title">Stay in the loop</h2>
+        <p class="cta__text">Get notified about new releases, shows, and exclusive content.</p>
+        <form class="cta__form" id="subscribeForm">
+          <input type="email" placeholder="your@email.com" class="cta__input" id="subscribeEmail" required />
+          <button type="submit" class="btn btn--primary" id="subscribeBtn">Subscribe</button>
+        </form>
+        <p class="cta__message" id="subscribeMessage"></p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById('subscribeForm') as HTMLFormElement;
+  const emailInput = document.getElementById('subscribeEmail') as HTMLInputElement;
+  const btn = document.getElementById('subscribeBtn') as HTMLButtonElement;
+  const msg = document.getElementById('subscribeMessage') as HTMLParagraphElement;
+
+  const FORMSPREE_ID = 'maqrwrvj'; // ← Вставь сюда свой Formspree ID, например 'xpzgkqYN'
+
+  function isValidEmail(email: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function getSubscribed(): string[] {
+    try { return JSON.parse(localStorage.getItem('cleanice_subscribers') || '[]'); }
+    catch { return []; }
+  }
+
+  function showMsg(text: string, ok: boolean) {
+    msg.textContent = text;
+    msg.style.color = ok ? 'rgba(255,255,255,.6)' : 'rgba(255,100,100,.7)';
+    msg.style.opacity = '1';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+
+    if (!isValidEmail(email)) {
+      showMsg('Enter a valid email', false);
+      return;
+    }
+
+    const subs = getSubscribed();
+    if (subs.includes(email)) {
+      showMsg('You\'re already subscribed', true);
+      emailInput.value = '';
+      return;
+    }
+
+    btn.textContent = '...';
+    btn.setAttribute('disabled', 'true');
+
+    if (FORMSPREE_ID) {
+      try {
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        if (!res.ok) throw new Error();
+      } catch {
+        showMsg('Something went wrong. Try again.', false);
+        btn.textContent = 'Subscribe';
+        btn.removeAttribute('disabled');
+        return;
+      }
+    }
+
+    subs.push(email);
+    localStorage.setItem('cleanice_subscribers', JSON.stringify(subs));
+    showMsg('Subscribed! Welcome aboard.', true);
+    emailInput.value = '';
+    btn.textContent = 'Subscribe';
+    btn.removeAttribute('disabled');
+  });
+</script>
+
+<style>
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 8rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%);
+    animation: glowPulse 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__label {
+    font-size: .75rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(4rem, 12vw, 10rem);
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__title-letter {
+    display: inline-block;
+    transition: text-shadow .3s ease-out, transform .3s ease-out, color .3s ease-out;
+  }
+
+  .hero__title-letter:hover {
+    color: #fff;
+    text-shadow:
+      0 0 12px rgba(255,255,255,.9),
+      0 0 24px rgba(255,255,255,.6),
+      0 0 48px rgba(255,255,255,.35),
+      0 0 80px rgba(255,255,255,.2);
+    transform: translateY(-4px);
+  }
+
+  .hero__sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    margin-bottom: 3rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: .3; transform: scaleY(1); }
+    50% { opacity: .7; transform: scaleY(1.2); }
+  }
+
+  /* Featured */
+  .featured {
+    padding: 6rem 0;
+  }
+
+  .featured__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Cards */
+  .card {
+    display: block;
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    transition: all .35s cubic-bezier(.22,1,.36,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    background: rgba(255,255,255,.04);
+    border-color: rgba(255,255,255,.12);
+    box-shadow: 0 0 10px rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.05);
+  }
+
+  .card__icon {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    transition: color .3s ease-out;
+  }
+
+  .card:hover .card__icon {
+    color: var(--primary);
+  }
+
+  .card__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    margin-bottom: .75rem;
+  }
+
+  .card__text {
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .card__arrow {
+    display: inline-block;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    transition: color .3s ease-out, transform .3s ease-out;
+  }
+
+  .card:hover .card__arrow {
+    color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  /* CTA */
+  .cta {
+    padding: 6rem 0;
+  }
+
+  .cta__inner {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+  }
+
+  .cta__title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: 1.8rem;
+    letter-spacing: 0.02em;
+    margin-bottom: .75rem;
+  }
+
+  .cta__text {
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .cta__form {
+    display: flex;
+    gap: .5rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .cta__input {
+    flex: 1;
+    padding: .85rem 1.2rem;
+    font-family: var(--font-sans);
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--primary);
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-input);
+    outline: none;
+    transition: border-color .3s ease-out, box-shadow .3s ease-out;
+  }
+
+  .cta__input::placeholder {
+    color: rgba(255,255,255,.25);
+  }
+
+  .cta__input:focus {
+    border-color: rgba(255,255,255,.2);
+    box-shadow: 0 0 16px rgba(255,255,255,.08);
+  }
+
+  .cta__message {
+    margin-top: 1rem;
+    font-size: .8rem;
+    font-weight: 300;
+    opacity: 0;
+    transition: opacity .3s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .hero__title { font-size: clamp(3rem, 15vw, 5rem); }
+    .cta__form { flex-direction: column; }
+  }
+</style>
