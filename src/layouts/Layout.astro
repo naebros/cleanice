@@ -6,8 +6,8 @@ interface Props {
 
 const { title, description = 'Cleanice — ню-метал. First Look — debut album 2026' } = Astro.props;
 
-const logoLetters = 'CLEANICE'.split('');
 const currentPath = Astro.url.pathname;
+import lightLogo from '../assets/logos/light_logo.svg';
 ---
 
 <!doctype html>
@@ -16,7 +16,7 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={lightLogo.src} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,500;1,6..96,300;1,6..96,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -38,11 +38,9 @@ const currentPath = Astro.url.pathname;
     </main>
     <footer class="footer">
       <div class="footer__inner">
-        <span class="footer__logo">
-          {logoLetters.map((letter) => (
-            <span class="footer__logo-letter">{letter}</span>
-          ))}
-        </span>
+        <a href="/" class="footer__logo-link">
+          <img src={lightLogo.src} alt="Cleanice" class="footer__logo-img" />
+        </a>
         <div class="footer__links">
           <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
         </div>
@@ -277,32 +275,26 @@ const currentPath = Astro.url.pathname;
   }
 
   /* Footer logo */
-  .footer__logo {
-    font-family: var(--font-serif);
-    font-weight: 300;
-    font-size: .9rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    display: inline-flex;
+  .footer__logo-link {
+    display: flex;
+    align-items: center;
+    transition: transform .3s ease-out;
   }
 
-  .footer__logo-letter {
-    display: inline-block;
-    transition: text-shadow .25s ease-out, color .25s ease-out;
-    cursor: pointer;
+  .footer__logo-link:hover {
+    transform: scale(1.08);
   }
 
-  .footer__logo:hover .footer__logo-letter {
-    color: rgba(255,255,255,.4);
+  .footer__logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    opacity: .5;
+    transition: opacity .3s ease-out;
   }
 
-  .footer__logo-letter:hover {
-    color: #fff !important;
-    text-shadow:
-      0 0 10px rgba(255,255,255,.8),
-      0 0 20px rgba(255,255,255,.5),
-      0 0 40px rgba(255,255,255,.3);
+  .footer__logo-link:hover .footer__logo-img {
+    opacity: .8;
   }
 
   /* Footer */
