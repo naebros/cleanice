@@ -1,10 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import albumCover from '../assets/album_photos/First Look.png';
+import bandPhoto from '../assets/аватаркагруппы.png';
 ---
 
 <Layout title="Cleanice">
   <section class="hero">
+    <div class="hero__bg">
+      <img src={bandPhoto.src} alt="" class="hero__bg-img" />
+    </div>
     <div class="hero__glow"></div>
     <div class="hero__content">
       <p class="hero__label anim-fade-up delay-1">New album out now</p>
@@ -158,6 +162,21 @@ import albumCover from '../assets/album_photos/First Look.png';
     padding: 8rem 2rem 4rem;
     text-align: center;
     overflow: hidden;
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .08;
+    filter: grayscale(1) contrast(1.2);
+    mix-blend-mode: screen;
   }
 
   .hero__glow {
