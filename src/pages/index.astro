@@ -1,8 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import albumCover from '../assets/album_photos/First Look.png';
 import bandPhoto from '../assets/аватаркагруппы.png';
-const year = new Date().getFullYear();
 ---
 
 <Layout title="Cleanice">
@@ -83,9 +81,10 @@ const year = new Date().getFullYear();
   function isValidEmail(email: string) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
   function getSubscribed(): string[] { try { return JSON.parse(localStorage.getItem('cleanice_subscribers') || '[]'); } catch { return []; } }
   function getLang() { return localStorage.getItem('cleanice_lang') || 'en'; }
+
   function showMsg(text: string, ok: boolean) {
     msg.textContent = text;
-    msg.style.color = ok ? (getLang() === 'ru' ? 'rgba(0,0,0,.5)' : 'rgba(255,255,255,.6)') : 'rgba(255,100,100,.7)';
+    msg.style.color = ok ? 'var(--text-secondary)' : '#ff6464';
     msg.style.opacity = '1';
   }
 
@@ -93,19 +92,22 @@ const year = new Date().getFullYear();
     e.preventDefault();
     const email = emailInput.value.trim();
     const lang = getLang();
-    if (!isValidEmail(email)) { showMsg(lang === 'ru' ? 'Введите корректный email' : 'Enter a valid email', false); return; }
+    const t = (k: string) => (window as any).i18n?.[lang]?.[k] || k;
+
+    if (!isValidEmail(email)) { showMsg(t('cta_invalid'), false); return; }
     const subs = getSubscribed();
-    if (subs.includes(email)) { showMsg(lang === 'ru' ? 'Вы уже подписаны' : "You're already subscribed", true); emailInput.value = ''; return; }
+    if (subs.includes(email)) { showMsg(t('cta_already'), true); emailInput.value = ''; return; }
+
     btn.textContent = '...'; btn.setAttribute('disabled', 'true');
     if (FORMSPREE_ID) {
       try {
         const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
         if (!res.ok) throw new Error();
-      } catch { showMsg(lang === 'ru' ? 'Что-то пошло не так' : 'Something went wrong.', false); btn.textContent = lang === 'ru' ? 'Подписаться' : 'Subscribe'; btn.removeAttribute('disabled'); return; }
+      } catch { showMsg(t('cta_error'), false); btn.textContent = t('cta_btn'); btn.removeAttribute('disabled'); return; }
     }
     subs.push(email); localStorage.setItem('cleanice_subscribers', JSON.stringify(subs));
-    showMsg(lang === 'ru' ? 'Подписан! Добро пожаловать.' : 'Subscribed! Welcome aboard.', true);
-    emailInput.value = ''; btn.textContent = lang === 'ru' ? 'Подписаться' : 'Subscribe'; btn.removeAttribute('disabled');
+    showMsg(t('cta_subscribed'), true);
+    emailInput.value = ''; btn.textContent = t('cta_btn'); btn.removeAttribute('disabled');
   });
 
   const heroBg = document.querySelector('.hero__bg-img') as HTMLElement;
