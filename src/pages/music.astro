@@ -141,11 +141,25 @@ const year = new Date().getFullYear();
     btn.setAttribute('aria-pressed', 'true');
 
     let found = 0;
-    cards.forEach(card => {
+    cards.forEach((card, i) => {
       const type = card.getAttribute('data-type');
       const show = filter === 'all' || type === filter;
-      (card as HTMLElement).style.display = show ? '' : 'none';
-      if (show) found++;
+      const el = card as HTMLElement;
+      if (show) {
+        el.style.display = '';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          el.style.transition = 'opacity .4s ease-out, transform .4s ease-out';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, i * 80);
+        found++;
+      } else {
+        el.style.transition = 'opacity .25s ease-out';
+        el.style.opacity = '0';
+        setTimeout(() => { el.style.display = 'none'; }, 250);
+      }
     });
 
     notFound.style.display = found === 0 ? 'flex' : 'none';
@@ -179,6 +193,17 @@ const year = new Date().getFullYear();
       releases.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+
+  // Scroll to releases on hero hover
+  const musicHero = document.querySelector('.music-hero');
+  if (musicHero) {
+    musicHero.addEventListener('mouseenter', () => {
+      const releases = document.getElementById('releases');
+      if (releases) {
+        releases.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
 
   // Disable image saving
   document.querySelectorAll('img').forEach(img => {

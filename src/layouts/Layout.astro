@@ -3,9 +3,10 @@ interface Props {
   title: string;
   description?: string;
   hideNav?: boolean;
+  hideFooter?: boolean;
 }
 
-const { title, description = 'Cleanice — ню-метал. First Look — debut album', hideNav = false } = Astro.props;
+const { title, description = 'Cleanice — ню-метал. First Look — debut album', hideNav = false, hideFooter = false } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const year = new Date().getFullYear();
@@ -24,6 +25,7 @@ const year = new Date().getFullYear();
     <title>{title}</title>
   </head>
   <body>
+    <div class="page-transition"></div>
     <div class="grain"></div>
     <div class="glow glow--top"></div>
     {!hideNav && (
@@ -38,6 +40,7 @@ const year = new Date().getFullYear();
     <main>
       <slot />
     </main>
+    {!hideFooter && (
     <footer class="footer">
       <div class="footer__inner">
         <span class="footer__logo-text">CLEANICE</span>
@@ -47,6 +50,7 @@ const year = new Date().getFullYear();
         <span class="footer__copy">&copy; {year} Cleanice</span>
       </div>
     </footer>
+    )}
   </body>
 </html>
 
@@ -101,6 +105,22 @@ const year = new Date().getFullYear();
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+  }
+
+  /* Page transition */
+  .page-transition {
+    position: fixed;
+    inset: 0;
+    background: var(--background);
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 1;
+    animation: pageIn 1s cubic-bezier(.22,1,.36,1) forwards;
+  }
+
+  @keyframes pageIn {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
 
   /* Grain overlay */
@@ -328,6 +348,11 @@ const year = new Date().getFullYear();
     to { opacity: 1; filter: blur(0); }
   }
 
+  @keyframes pageOut {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   /* Scroll reveal */
   .reveal {
     opacity: 0;
@@ -430,5 +455,21 @@ const year = new Date().getFullYear();
   });
   document.addEventListener('dragstart', (e) => {
     if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
+  });
+
+  // Page transition on link clicks
+  document.querySelectorAll('a[href^="/"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+      if (href && href !== window.location.pathname) {
+        e.preventDefault();
+        const transition = document.querySelector('.page-transition') as HTMLElement;
+        transition.style.animation = 'none';
+        transition.style.opacity = '0';
+        void transition.offsetWidth;
+        transition.style.animation = 'pageOut .6s cubic-bezier(.22,1,.36,1) forwards';
+        setTimeout(() => { window.location.href = href; }, 550);
+      }
+    });
   });
 </script>
