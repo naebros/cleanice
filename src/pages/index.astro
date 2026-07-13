@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import albumCover from '../assets/album_photos/First Look.png';
 import bandPhoto from '../assets/аватаркагруппы.png';
+const year = new Date().getFullYear();
 ---
 
 <Layout title="Cleanice">
@@ -15,7 +16,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
       <h1 class="hero__title anim-blur-in delay-3">
         <span class="hero__title-letter">C</span><span class="hero__title-letter">l</span><span class="hero__title-letter">e</span><span class="hero__title-letter">a</span><span class="hero__title-letter">n</span><span class="hero__title-letter">i</span><span class="hero__title-letter">c</span><span class="hero__title-letter">e</span>
       </h1>
-      <p class="hero__sub anim-fade-up delay-5">Nü metal. First Look — debut album 2026</p>
+      <p class="hero__sub anim-fade-up delay-5">Nü metal. First Look — debut album {year}</p>
       <div class="hero__actions anim-fade-up delay-6">
         <a href="/music" class="btn btn--primary">Listen now</a>
         <a href="/about" class="btn btn--ghost">About us</a>

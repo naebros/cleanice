@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import albumCover from '../assets/album_photos/First Look.png';
+const year = new Date().getFullYear();
 ---
 
 <Layout title="Music — Cleanice" description="Cleanice — ню-метал. Дебютный альбом First Look.">
@@ -18,19 +19,19 @@ import albumCover from '../assets/album_photos/First Look.png';
     <div class="section-container">
       <div class="releases__header reveal">
         <h2 class="section-title">Releases</h2>
-        <div class="releases__filter" role="group" aria-label="Filter releases">
-          <button class="filter-btn filter-btn--active" aria-pressed="true">All</button>
-          <button class="filter-btn" aria-pressed="false">Albums</button>
-          <button class="filter-btn" aria-pressed="false">Singles</button>
+        <div class="releases__filter" role="group" aria-label="Filter releases" id="filterGroup">
+          <button class="filter-btn filter-btn--active" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-btn" data-filter="album" aria-pressed="false">Albums</button>
+          <button class="filter-btn" data-filter="single" aria-pressed="false">Singles</button>
         </div>
       </div>
 
-      <div class="releases__grid">
-        <article class="release-card release-card--featured reveal" style="--i:0">
+      <div class="releases__grid" id="releasesGrid">
+        <article class="release-card release-card--featured reveal" data-type="album">
           <div class="release-card__cover">
             <img src={albumCover.src} alt="First Look — Cleanice" class="release-card__artwork-img" />
             <div class="release-card__overlay">
-              <button class="release-card__play" aria-label="Play">
+              <button class="release-card__play" aria-label="Play" id="openPlayer">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <polygon points="5 3 19 12 5 21 5 3"/>
                 </svg>
@@ -40,22 +41,147 @@ import albumCover from '../assets/album_photos/First Look.png';
           <div class="release-card__info">
             <span class="release-card__type">Album</span>
             <h3 class="release-card__title">First Look</h3>
-            <p class="release-card__date">2026 — Debut album</p>
+            <p class="release-card__date">{year} — Debut album</p>
           </div>
         </article>
       </div>
+
+      <div class="not-found" id="notFound" style="display:none">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <line x1="8" y1="11" x2="14" y2="11"/>
+        </svg>
+        <p>Nothing found yet</p>
+      </div>
     </div>
   </section>
+
+  <!-- Player Modal -->
+  <div class="player-modal" id="playerModal">
+    <div class="player-modal__backdrop" id="closePlayer"></div>
+    <div class="player-modal__content">
+      <button class="player-modal__close" id="closePlayerBtn" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="player-modal__left">
+        <img src={albumCover.src} alt="First Look" class="player-modal__cover" />
+        <h3 class="player-modal__title">First Look</h3>
+        <p class="player-modal__desc">Дебютный альбом Cleanice. Ню-метал {year}. Жёстко, но чисто. Громко, но с пространством.</p>
+      </div>
+      <div class="player-modal__right">
+        <p class="player-modal__tracklist-label">Tracklist</p>
+        <div class="player-modal__tracks">
+          <div class="track track--active">
+            <span class="track__num">01</span>
+            <div class="track__info">
+              <span class="track__name">War</span>
+              <span class="track__duration">3:42</span>
+            </div>
+            <div class="track__eq">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="track track--locked">
+            <span class="track__num">02</span>
+            <div class="track__info">
+              <span class="track__name">Coming soon</span>
+            </div>
+            <svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="track track--locked">
+            <span class="track__num">03</span>
+            <div class="track__info">
+              <span class="track__name">Coming soon</span>
+            </div>
+            <svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="track track--locked">
+            <span class="track__num">04</span>
+            <div class="track__info">
+              <span class="track__name">Coming soon</span>
+            </div>
+            <svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="track track--locked">
+            <span class="track__num">05</span>
+            <div class="track__info">
+              <span class="track__name">Coming soon</span>
+            </div>
+            <svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>
 
 <script>
+  // Filter
+  const filterGroup = document.getElementById('filterGroup')!;
+  const grid = document.getElementById('releasesGrid')!;
+  const notFound = document.getElementById('notFound')!;
+  const cards = grid.querySelectorAll('.release-card');
+
+  filterGroup.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.filter-btn');
+    if (!btn) return;
+    const filter = btn.dataset.filter;
+
+    filterGroup.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('filter-btn--active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('filter-btn--active');
+    btn.setAttribute('aria-pressed', 'true');
+
+    let found = 0;
+    cards.forEach(card => {
+      const type = card.getAttribute('data-type');
+      const show = filter === 'all' || type === filter;
+      (card as HTMLElement).style.display = show ? '' : 'none';
+      if (show) found++;
+    });
+
+    notFound.style.display = found === 0 ? 'flex' : 'none';
+  });
+
+  // Player modal
+  const modal = document.getElementById('playerModal')!;
+  document.getElementById('openPlayer')!.addEventListener('click', () => {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('closePlayer')!.addEventListener('click', closeModal);
+  document.getElementById('closePlayerBtn')!.addEventListener('click', closeModal);
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Parallax
   const musicBg = document.querySelector('.music-hero__bg-img') as HTMLElement;
   if (musicBg) {
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      musicBg.style.transform = `translateY(${scrolled * 0.25}px)`;
+      musicBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
     }, { passive: true });
   }
+
+  // Disable image saving
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', e => e.preventDefault());
+    img.setAttribute('draggable', 'false');
+  });
 </script>
 
 <style>
@@ -66,7 +192,6 @@ import albumCover from '../assets/album_photos/First Look.png';
     letter-spacing: 0.02em;
   }
 
-  /* Music Hero */
   .music-hero {
     min-height: 50vh;
     display: flex;
@@ -99,6 +224,8 @@ import albumCover from '../assets/album_photos/First Look.png';
     text-transform: uppercase;
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
   }
 
   .music-hero__title {
@@ -107,12 +234,11 @@ import albumCover from '../assets/album_photos/First Look.png';
     font-size: clamp(3rem, 8vw, 6rem);
     line-height: 1;
     letter-spacing: 0.04em;
+    position: relative;
+    z-index: 1;
   }
 
-  /* Releases */
-  .releases {
-    padding: 4rem 0 6rem;
-  }
+  .releases { padding: 4rem 0 6rem; }
 
   .releases__header {
     display: flex;
@@ -123,10 +249,7 @@ import albumCover from '../assets/album_photos/First Look.png';
     gap: 1rem;
   }
 
-  .releases__filter {
-    display: flex;
-    gap: .5rem;
-  }
+  .releases__filter { display: flex; gap: .5rem; }
 
   .filter-btn {
     padding: .5rem 1rem;
@@ -142,9 +265,7 @@ import albumCover from '../assets/album_photos/First Look.png';
     letter-spacing: 0.04em;
   }
 
-  .filter-btn:hover {
-    color: var(--primary);
-  }
+  .filter-btn:hover { color: var(--primary); }
 
   .filter-btn--active {
     color: var(--primary);
@@ -158,7 +279,6 @@ import albumCover from '../assets/album_photos/First Look.png';
     gap: 1.5rem;
   }
 
-  /* Release Card */
   .release-card {
     border-radius: var(--radius-card);
     background: rgba(255,255,255,.02);
@@ -176,7 +296,6 @@ import albumCover from '../assets/album_photos/First Look.png';
 
   .release-card__cover {
     aspect-ratio: 1;
-    background: rgba(255,255,255,.03);
     position: relative;
     display: flex;
     align-items: center;
@@ -191,9 +310,7 @@ import albumCover from '../assets/album_photos/First Look.png';
     transition: transform .6s cubic-bezier(.22,1,.36,1);
   }
 
-  .release-card:hover .release-card__artwork-img {
-    transform: scale(1.05);
-  }
+  .release-card:hover .release-card__artwork-img { transform: scale(1.05); }
 
   .release-card__overlay {
     position: absolute;
@@ -206,9 +323,7 @@ import albumCover from '../assets/album_photos/First Look.png';
     transition: opacity .3s ease-out;
   }
 
-  .release-card:hover .release-card__overlay {
-    opacity: 1;
-  }
+  .release-card:hover .release-card__overlay { opacity: 1; }
 
   .release-card__play {
     width: 56px;
@@ -231,13 +346,9 @@ import albumCover from '../assets/album_photos/First Look.png';
     transform: scale(1.1);
   }
 
-  .release-card__play svg {
-    margin-left: 2px;
-  }
+  .release-card__play svg { margin-left: 2px; }
 
-  .release-card__info {
-    padding: 1.5rem;
-  }
+  .release-card__info { padding: 1.5rem; }
 
   .release-card__type {
     font-size: .7rem;
@@ -259,7 +370,6 @@ import albumCover from '../assets/album_photos/First Look.png';
     font-size: .8rem;
     font-weight: 300;
     color: var(--text-secondary);
-    margin-bottom: 1rem;
   }
 
   .release-card--featured {
@@ -268,14 +378,216 @@ import albumCover from '../assets/album_photos/First Look.png';
     margin: 0 auto;
   }
 
-  .release-card--featured .release-card__cover {
-    aspect-ratio: 1;
+  .release-card--featured .release-card__cover { aspect-ratio: 1; }
+
+  /* Not found */
+  .not-found {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 0;
+    color: var(--text-secondary);
+    opacity: .5;
   }
 
-  @media (max-width: 768px) {
-    .releases__header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  .not-found p {
+    font-size: .9rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  /* Player Modal */
+  .player-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease-out;
+  }
+
+  .player-modal.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .player-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    backdrop-filter: blur(8px);
+  }
+
+  .player-modal__content {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    max-width: 640px;
+    width: 90vw;
+    max-height: 85vh;
+    background: rgba(18,18,18,.95);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 2rem;
+    backdrop-filter: blur(24px);
+    overflow-y: auto;
+    transform: translateY(20px) scale(.97);
+    transition: transform .4s cubic-bezier(.22,1,.36,1);
+  }
+
+  .player-modal.open .player-modal__content {
+    transform: translateY(0) scale(1);
+  }
+
+  .player-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: .5rem;
+    border-radius: 50%;
+    transition: color .3s ease-out, background .3s ease-out;
+  }
+
+  .player-modal__close:hover {
+    color: var(--primary);
+    background: rgba(255,255,255,.05);
+  }
+
+  .player-modal__left {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .player-modal__cover {
+    width: 200px;
+    height: 200px;
+    border-radius: var(--radius-card);
+    object-fit: cover;
+  }
+
+  .player-modal__title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .player-modal__desc {
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .player-modal__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .player-modal__tracklist-label {
+    font-size: .7rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: .25rem;
+  }
+
+  .player-modal__tracks {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+
+  .track {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .75rem;
+    border-radius: var(--radius-btn);
+    transition: background .3s ease-out;
+  }
+
+  .track--active {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+
+  .track--locked {
+    opacity: .35;
+    filter: blur(1px);
+    pointer-events: none;
+  }
+
+  .track__num {
+    font-size: .75rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    min-width: 1.5rem;
+  }
+
+  .track__info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .track__name {
+    font-size: .85rem;
+    font-weight: 300;
+  }
+
+  .track__duration {
+    font-size: .75rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+  }
+
+  .track__lock {
+    color: var(--text-secondary);
+    opacity: .5;
+  }
+
+  .track__eq {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+  }
+
+  .track__eq span {
+    width: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+    animation: eqBounce .8s ease-in-out infinite alternate;
+  }
+
+  .track__eq span:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .track__eq span:nth-child(2) { height: 10px; animation-delay: .15s; }
+  .track__eq span:nth-child(3) { height: 4px; animation-delay: .3s; }
+
+  @keyframes eqBounce {
+    from { height: 3px; }
+    to { height: 12px; }
+  }
+
+  @media (max-width: 600px) {
+    .player-modal__content { flex-direction: column; align-items: center; }
+    .player-modal__left { flex: none; }
+    .releases__header { flex-direction: column; align-items: flex-start; }
   }
 </style>

@@ -4,9 +4,10 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'Cleanice — ню-метал. First Look — debut album 2026' } = Astro.props;
+const { title, description = 'Cleanice — ню-метал. First Look — debut album' } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -40,7 +41,7 @@ const currentPath = Astro.url.pathname;
         <div class="footer__links">
           <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
         </div>
-        <span class="footer__copy">&copy; {new Date().getFullYear()} Cleanice</span>
+        <span class="footer__copy">&copy; {year} Cleanice</span>
       </div>
     </footer>
   </body>
@@ -416,5 +417,13 @@ const currentPath = Astro.url.pathname;
 
   document.querySelectorAll('.reveal, .reveal--blur, .reveal--scale').forEach((el) => {
     observer.observe(el);
+  });
+
+  // Disable image saving globally
+  document.addEventListener('contextmenu', (e) => {
+    if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
+  });
+  document.addEventListener('dragstart', (e) => {
+    if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
   });
 </script>

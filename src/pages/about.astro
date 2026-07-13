@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import albumCover from '../assets/album_photos/First Look.png';
 import bandPhoto from '../assets/аватаркагруппы.png';
+const year = new Date().getFullYear();
 ---
 
 <Layout title="About — Cleanice" description="Cleanice — ню-метал группа. Дебютный альбом First Look.">
@@ -24,7 +25,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
             Cleanice — ню-метал команда, которая строит звук на контрасте тяжести и чистоты. Мы берём агрессию жанра и пропускаем её через призму минимализма.
           </p>
           <p>
-            Сейчас мы работаем над дебютным альбомом <strong>"First Look"</strong> — это наш первый взгляд на то, как должен звучать ню-метал в 2026-м. Жёстко, но чисто. Громко, но с пространством.
+            Сейчас мы работаем над дебютным альбомом <strong>"First Look"</strong> — это наш первый взгляд на то, как должен звучать ню-метал в {year}-м. Жёстко, но чисто. Громко, но с пространством.
           </p>
         </div>
         <div class="about-story__visual reveal" style="transition-delay:.15s">
@@ -36,26 +37,52 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     </div>
   </section>
 
+  <!-- Translate Widget -->
+  <section class="about-translate">
+    <div class="section-container">
+      <div class="translate-card reveal">
+        <h3 class="translate-card__title">Translate</h3>
+        <p class="translate-card__sub">Russian → English</p>
+        <div class="translate-card__body">
+          <div class="translate-card__col">
+            <span class="translate-card__lang">RU</span>
+            <textarea class="translate-card__input" id="translateInput" placeholder="Введите текст на русском..." rows="5"></textarea>
+          </div>
+          <div class="translate-card__arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+          <div class="translate-card__col">
+            <span class="translate-card__lang">EN</span>
+            <textarea class="translate-card__output" id="translateOutput" rows="5" readonly placeholder="Translation..."></textarea>
+          </div>
+        </div>
+        <button class="btn btn--primary translate-card__btn" id="translateBtn">Translate</button>
+      </div>
+    </div>
+  </section>
+
   <section class="about-values">
     <div class="section-container">
       <h2 class="section-title reveal">What Drives Us</h2>
       <div class="values-grid">
-        <div class="value-card reveal" style="--i:0">
+        <div class="value-card reveal">
           <span class="value-card__number">01</span>
           <h3 class="value-card__title">Контраст</h3>
           <p class="value-card__text">Тяжесть и чистота. Шум и тишина. Мы живём на границе двух крайностей.</p>
         </div>
-        <div class="value-card reveal" style="--i:1;transition-delay:.1s">
+        <div class="value-card reveal" style="transition-delay:.1s">
           <span class="value-card__number">02</span>
           <h3 class="value-card__title">Энергия</h3>
           <p class="value-card__text">Ню-метал — это движение. Каждый трек должен заставить тело реагировать.</p>
         </div>
-        <div class="value-card reveal" style="--i:2;transition-delay:.2s">
+        <div class="value-card reveal" style="transition-delay:.2s">
           <span class="value-card__number">03</span>
           <h3 class="value-card__title">Чистота</h3>
           <p class="value-card__text">Cleanice — не просто название. Мы фильтруем звук до самого essential.</p>
         </div>
-        <div class="value-card reveal" style="--i:3;transition-delay:.3s">
+        <div class="value-card reveal" style="transition-delay:.3s">
           <span class="value-card__number">04</span>
           <h3 class="value-card__title">Свежесть</h3>
           <p class="value-card__text">Первый альбом — первый взгляд. Мы не копируем, мы создаём свой звук.</p>
@@ -68,7 +95,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     <div class="section-container">
       <h2 class="section-title reveal">Members</h2>
       <div class="members-grid">
-        <div class="member-card reveal" style="--i:0">
+        <div class="member-card reveal">
           <div class="member-card__photo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -78,7 +105,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
           <h3 class="member-card__name">Senu O</h3>
           <p class="member-card__role">Vocals / Guitar / Frontman / DJ</p>
         </div>
-        <div class="member-card reveal" style="--i:1;transition-delay:.1s">
+        <div class="member-card reveal" style="transition-delay:.1s">
           <div class="member-card__photo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -101,6 +128,29 @@ import bandPhoto from '../assets/аватаркагруппы.png';
   </section>
 </Layout>
 
+<script>
+  // Translate via MyMemory API (free, no key needed)
+  const input = document.getElementById('translateInput') as HTMLTextAreaElement;
+  const output = document.getElementById('translateOutput') as HTMLTextAreaElement;
+  const btn = document.getElementById('translateBtn') as HTMLButtonElement;
+
+  btn.addEventListener('click', async () => {
+    const text = input.value.trim();
+    if (!text) return;
+    btn.textContent = '...';
+    btn.setAttribute('disabled', 'true');
+    try {
+      const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ru|en`);
+      const data = await res.json();
+      output.value = data.responseData?.translatedText || 'Translation failed';
+    } catch {
+      output.value = 'Connection error';
+    }
+    btn.textContent = 'Translate';
+    btn.removeAttribute('disabled');
+  });
+</script>
+
 <style>
   .section-title {
     font-family: var(--font-serif);
@@ -110,7 +160,6 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     margin-bottom: 3rem;
   }
 
-  /* About Hero */
   .about-hero {
     min-height: 70vh;
     display: flex;
@@ -146,10 +195,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     margin: 0 auto;
   }
 
-  /* Story */
-  .about-story {
-    padding: 6rem 0;
-  }
+  .about-story { padding: 6rem 0; }
 
   .about-story__grid {
     display: grid;
@@ -171,9 +217,6 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     border-radius: var(--radius-card);
     background: rgba(255,255,255,.02);
     border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
   }
 
@@ -183,10 +226,80 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     object-fit: cover;
   }
 
-  /* Values */
-  .about-values {
-    padding: 6rem 0;
+  /* Translate Widget */
+  .about-translate { padding: 0 0 6rem; }
+
+  .translate-card {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.02);
+    border: 1px solid var(--border);
   }
+
+  .translate-card__title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: .25rem;
+  }
+
+  .translate-card__sub {
+    font-size: .75rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    margin-bottom: 1.5rem;
+  }
+
+  .translate-card__body {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .translate-card__col { flex: 1; display: flex; flex-direction: column; gap: .4rem; }
+
+  .translate-card__lang {
+    font-size: .7rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .translate-card__arrow {
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  .translate-card__input,
+  .translate-card__output {
+    width: 100%;
+    padding: .75rem;
+    font-family: var(--font-sans);
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--primary);
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-input);
+    outline: none;
+    resize: none;
+    transition: border-color .3s ease-out;
+  }
+
+  .translate-card__input::placeholder { color: rgba(255,255,255,.2); }
+  .translate-card__input:focus { border-color: rgba(255,255,255,.15); }
+
+  .translate-card__output { opacity: .7; }
+
+  .translate-card__btn { margin-top: .5rem; }
+
+  .about-values { padding: 6rem 0; }
 
   .values-grid {
     display: grid;
@@ -230,10 +343,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     line-height: 1.7;
   }
 
-  /* Members */
-  .about-members {
-    padding: 6rem 0;
-  }
+  .about-members { padding: 6rem 0; }
 
   .members-grid {
     display: grid;
@@ -283,11 +393,7 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     letter-spacing: 0.04em;
   }
 
-  /* Quote */
-  .about-quote {
-    padding: 6rem 0;
-    text-align: center;
-  }
+  .about-quote { padding: 6rem 0; text-align: center; }
 
   .about-quote__text {
     font-family: var(--font-serif);
@@ -300,12 +406,9 @@ import bandPhoto from '../assets/аватаркагруппы.png';
   }
 
   @media (max-width: 768px) {
-    .about-story__grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .members-grid {
-      grid-template-columns: 1fr;
-    }
+    .about-story__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .members-grid { grid-template-columns: 1fr; }
+    .translate-card__body { flex-direction: column; }
+    .translate-card__arrow { transform: rotate(90deg); margin: 0 auto; }
   }
 </style>
