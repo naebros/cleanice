@@ -5,6 +5,9 @@ import albumCover from '../assets/album_photos/First Look.png';
 
 <Layout title="Music — Cleanice" description="Cleanice — ню-метал. Дебютный альбом First Look.">
   <section class="music-hero">
+    <div class="music-hero__bg">
+      <img src={albumCover.src} alt="" class="music-hero__bg-img" />
+    </div>
     <div class="section-container">
       <p class="music-hero__label anim-fade-up delay-1">Discography</p>
       <h1 class="music-hero__title anim-blur-in delay-2">Music</h1>
@@ -45,6 +48,16 @@ import albumCover from '../assets/album_photos/First Look.png';
   </section>
 </Layout>
 
+<script>
+  const musicBg = document.querySelector('.music-hero__bg-img') as HTMLElement;
+  if (musicBg) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      musicBg.style.transform = `translateY(${scrolled * 0.25}px)`;
+    }, { passive: true });
+  }
+</script>
+
 <style>
   .section-title {
     font-family: var(--font-serif);
@@ -60,6 +73,23 @@ import albumCover from '../assets/album_photos/First Look.png';
     align-items: center;
     padding-top: 6rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .music-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .music-hero__bg-img {
+    width: 100%;
+    height: 140%;
+    object-fit: cover;
+    opacity: .12;
+    filter: grayscale(1) contrast(1.3);
+    will-change: transform;
   }
 
   .music-hero__label {
