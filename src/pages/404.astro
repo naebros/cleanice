@@ -2,11 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="404 — Cleanice" description="Page not found">
+<Layout title="404 — Cleanice" description="Page not found" hideNav={true}>
   <section class="notfound">
     <div class="section-container">
-      <p class="notfound__code anim-blur-in">404</p>
-      <h1 class="notfound__title anim-fade-up delay-2">Lost in silence</h1>
+      <h1 class="notfound__code anim-blur-in">404</h1>
+      <p class="notfound__title anim-fade-up delay-2">Lost in silence</p>
       <p class="notfound__text anim-fade-up delay-3">This page doesn't exist. Maybe it was never meant to.</p>
       <a href="/" class="btn btn--primary anim-fade-up delay-4">Back to home</a>
     </div>
@@ -24,26 +24,25 @@ import Layout from '../layouts/Layout.astro';
 
   .notfound__code {
     font-family: var(--font-serif);
-    font-size: clamp(6rem, 20vw, 14rem);
+    font-size: clamp(4rem, 12vw, 10rem);
     font-weight: 300;
-    line-height: 1;
+    line-height: 0.9;
     letter-spacing: 0.04em;
-    color: rgba(255,255,255,.06);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .notfound__title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: 1rem;
     font-weight: 300;
-    letter-spacing: 0.04em;
-    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    margin-bottom: .75rem;
   }
 
   .notfound__text {
-    font-size: .9rem;
+    font-size: .85rem;
     font-weight: 300;
-    color: var(--text-secondary);
+    color: rgba(255,255,255,.25);
     margin-bottom: 2rem;
     line-height: 1.7;
   }

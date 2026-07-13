@@ -37,32 +37,6 @@ const year = new Date().getFullYear();
     </div>
   </section>
 
-  <!-- Translate Widget -->
-  <section class="about-translate">
-    <div class="section-container">
-      <div class="translate-card reveal">
-        <h3 class="translate-card__title">Translate</h3>
-        <p class="translate-card__sub">Russian → English</p>
-        <div class="translate-card__body">
-          <div class="translate-card__col">
-            <span class="translate-card__lang">RU</span>
-            <textarea class="translate-card__input" id="translateInput" placeholder="Введите текст на русском..." rows="5"></textarea>
-          </div>
-          <div class="translate-card__arrow">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </div>
-          <div class="translate-card__col">
-            <span class="translate-card__lang">EN</span>
-            <textarea class="translate-card__output" id="translateOutput" rows="5" readonly placeholder="Translation..."></textarea>
-          </div>
-        </div>
-        <button class="btn btn--primary translate-card__btn" id="translateBtn">Translate</button>
-      </div>
-    </div>
-  </section>
-
   <section class="about-values">
     <div class="section-container">
       <h2 class="section-title reveal">What Drives Us</h2>
@@ -127,29 +101,6 @@ const year = new Date().getFullYear();
     </div>
   </section>
 </Layout>
-
-<script>
-  // Translate via MyMemory API (free, no key needed)
-  const input = document.getElementById('translateInput') as HTMLTextAreaElement;
-  const output = document.getElementById('translateOutput') as HTMLTextAreaElement;
-  const btn = document.getElementById('translateBtn') as HTMLButtonElement;
-
-  btn.addEventListener('click', async () => {
-    const text = input.value.trim();
-    if (!text) return;
-    btn.textContent = '...';
-    btn.setAttribute('disabled', 'true');
-    try {
-      const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ru|en`);
-      const data = await res.json();
-      output.value = data.responseData?.translatedText || 'Translation failed';
-    } catch {
-      output.value = 'Connection error';
-    }
-    btn.textContent = 'Translate';
-    btn.removeAttribute('disabled');
-  });
-</script>
 
 <style>
   .section-title {
@@ -225,79 +176,6 @@ const year = new Date().getFullYear();
     height: 100%;
     object-fit: cover;
   }
-
-  /* Translate Widget */
-  .about-translate { padding: 0 0 6rem; }
-
-  .translate-card {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 2rem;
-    border-radius: var(--radius-card);
-    background: rgba(255,255,255,.02);
-    border: 1px solid var(--border);
-  }
-
-  .translate-card__title {
-    font-family: var(--font-serif);
-    font-size: 1.3rem;
-    font-weight: 400;
-    margin-bottom: .25rem;
-  }
-
-  .translate-card__sub {
-    font-size: .75rem;
-    font-weight: 300;
-    color: var(--text-secondary);
-    letter-spacing: 0.06em;
-    margin-bottom: 1.5rem;
-  }
-
-  .translate-card__body {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-  }
-
-  .translate-card__col { flex: 1; display: flex; flex-direction: column; gap: .4rem; }
-
-  .translate-card__lang {
-    font-size: .7rem;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-  }
-
-  .translate-card__arrow {
-    margin-top: 1.5rem;
-    color: var(--text-secondary);
-    flex-shrink: 0;
-  }
-
-  .translate-card__input,
-  .translate-card__output {
-    width: 100%;
-    padding: .75rem;
-    font-family: var(--font-sans);
-    font-size: .85rem;
-    font-weight: 300;
-    color: var(--primary);
-    background: rgba(255,255,255,.03);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-input);
-    outline: none;
-    resize: none;
-    transition: border-color .3s ease-out;
-  }
-
-  .translate-card__input::placeholder { color: rgba(255,255,255,.2); }
-  .translate-card__input:focus { border-color: rgba(255,255,255,.15); }
-
-  .translate-card__output { opacity: .7; }
-
-  .translate-card__btn { margin-top: .5rem; }
 
   .about-values { padding: 6rem 0; }
 
@@ -408,7 +286,5 @@ const year = new Date().getFullYear();
   @media (max-width: 768px) {
     .about-story__grid { grid-template-columns: 1fr; gap: 2rem; }
     .members-grid { grid-template-columns: 1fr; }
-    .translate-card__body { flex-direction: column; }
-    .translate-card__arrow { transform: rotate(90deg); margin: 0 auto; }
   }
 </style>
