@@ -40,7 +40,7 @@ import albumCover from '../assets/album_photos/First Look.png';
           <div class="release-card__info">
             <span class="release-card__type">Album</span>
             <h3 class="release-card__title">First Look</h3>
-            <p class="release-card__date" data-i18n="album_date">2026 — Debut album</p>
+            <p class="release-card__date" data-i18n="album_date">In progress</p>
           </div>
         </article>
       </div>
@@ -172,44 +172,29 @@ import albumCover from '../assets/album_photos/First Look.png';
   });
   document.getElementById('closePlayer')!.addEventListener('click', closeModal);
   document.getElementById('closePlayerBtn')!.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
   function closeModal() {
     modal.classList.remove('open');
     document.body.style.overflow = '';
   }
 
   // Parallax
-  const musicBg = document.querySelector('.music-hero__bg-img') as HTMLElement;
-  if (musicBg) {
-    window.addEventListener('scroll', () => {
-      musicBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
-    }, { passive: true });
-  }
-
-  // Auto-scroll to releases on page load
-  requestAnimationFrame(() => {
-    const releases = document.getElementById('releases');
-    if (releases) {
-      releases.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion) {
+    const musicBg = document.querySelector('.music-hero__bg-img') as HTMLElement;
+    if (musicBg) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            musicBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
     }
-  });
-
-  // Scroll to releases on hero hover
-  const musicHero = document.querySelector('.music-hero');
-  if (musicHero) {
-    musicHero.addEventListener('mouseenter', () => {
-      const releases = document.getElementById('releases');
-      if (releases) {
-        releases.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
   }
-
-  // Disable image saving
-  document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('contextmenu', e => e.preventDefault());
-    img.setAttribute('draggable', 'false');
-    if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
-  });
 </script>
 
 <style>

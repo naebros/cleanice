@@ -4,19 +4,21 @@ import bandPhoto from '../assets/аватаркагруппы.png';
 ---
 
 <Layout title="Cleanice">
-  <section class="hero">
+  <a href="#content" class="sr-only">Skip to content</a>
+
+  <section class="hero" id="content">
     <div class="hero__bg">
-      <img src={bandPhoto.src} alt="" class="hero__bg-img" loading="eager" />
+      <img src={bandPhoto.src} alt="" class="hero__bg-img" loading="eager" draggable="false" />
     </div>
     <div class="hero__glow"></div>
     <div class="hero__content">
-      <p class="hero__label anim-fade-up delay-1" data-i18n="hero_label">New album out now</p>
+      <p class="hero__label anim-fade-up delay-1" data-i18n="hero_label">New album in progress</p>
       <h1 class="hero__title">
         {['C','l','e','a','n','i','c','e'].map((letter, i) => (
           <span class="hero__title-letter" style={`animation-delay:${.3 + i * .08}s`}>{letter}</span>
         ))}
       </h1>
-      <p class="hero__sub anim-fade-up delay-5" data-i18n="hero_sub">Nü metal. First Look — debut album</p>
+      <p class="hero__sub anim-fade-up delay-5" data-i18n="hero_sub">Nü metal. First Look — coming soon</p>
       <div class="hero__actions anim-fade-up delay-6">
         <a href="/music" class="btn btn--primary" data-i18n="hero_listen">Listen now</a>
         <a href="/about" class="btn btn--ghost" data-i18n="hero_about">About us</a>
@@ -34,8 +36,8 @@ import bandPhoto from '../assets/аватаркагруппы.png';
           <div class="card__icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/></svg>
           </div>
-          <h3 class="card__title" data-i18n="card_music_title">Latest Release</h3>
-          <p class="card__text" data-i18n="card_music_text">Explore our discography and find your next favorite track.</p>
+          <h3 class="card__title" data-i18n="card_music_title">First Look</h3>
+          <p class="card__text" data-i18n="card_music_text">Our debut album is in the works. Stay tuned.</p>
           <span class="card__arrow">&rarr;</span>
         </a>
         <a href="/about" class="card reveal" style="transition-delay:.1s">
@@ -104,68 +106,52 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     emailInput.value = ''; btn.textContent = t('cta_btn'); btn.removeAttribute('disabled');
   });
 
-  const heroBg = document.querySelector('.hero__bg-img') as HTMLElement;
-  if (heroBg) {
-    window.addEventListener('scroll', () => { heroBg.style.transform = `translateY(${window.scrollY * 0.3}px)`; }, { passive: true });
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion) {
+    const heroBg = document.querySelector('.hero__bg-img') as HTMLElement;
+    if (heroBg) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            heroBg.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
   }
 </script>
 
 <style>
-  /* Hero */
   .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 8rem 2rem 4rem; text-align: center; overflow: hidden; }
   .hero__bg { position: absolute; inset: 0; z-index: 0; }
   .hero__bg-img { width: 100%; height: 130%; object-fit: cover; opacity: .08; filter: grayscale(1) contrast(1.2); mix-blend-mode: screen; will-change: transform; }
   body.light .hero__bg-img { opacity: .06; filter: grayscale(1) contrast(.8); mix-blend-mode: multiply; }
   .hero__glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%); animation: glowPulse 6s ease-in-out infinite; pointer-events: none; }
   .hero__content { position: relative; z-index: 1; }
-
-  /* Title letters — staggered entrance */
   .hero__title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(4rem, 12vw, 10rem); line-height: .9; letter-spacing: .04em; margin-bottom: 1.5rem; display: flex; justify-content: center; }
   .hero__title-letter {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(20px) scale(.9);
+    display: inline-block; opacity: 0; transform: translateY(20px) scale(.9);
     animation: letterIn .7s cubic-bezier(.22,1,.36,1) forwards;
     transition: color .25s ease-out, transform .4s cubic-bezier(.34,1.56,.64,1), text-shadow .3s ease-out;
     user-select: none;
   }
-  @keyframes letterIn {
-    from { opacity: 0; transform: translateY(20px) scale(.9); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .hero__title-letter:hover {
-    color: var(--primary);
-    transform: translateY(-8px) scale(1.08);
-    text-shadow: 0 0 20px rgba(255,255,255,.4), 0 0 40px rgba(255,255,255,.15);
-  }
-
+  @keyframes letterIn { from { opacity: 0; transform: translateY(20px) scale(.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .hero__title-letter:hover { color: var(--primary); transform: translateY(-8px) scale(1.08); text-shadow: 0 0 20px rgba(255,255,255,.4), 0 0 40px rgba(255,255,255,.15); }
+  .hero__label { font-size: .75rem; font-weight: 300; letter-spacing: .15em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 2rem; }
   .hero__sub { font-size: 1rem; font-weight: 300; color: var(--text-secondary); letter-spacing: .08em; margin-bottom: 3rem; }
   .hero__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
   .hero__scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); }
   .hero__scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent); animation: scrollPulse 2s ease-in-out infinite; }
   @keyframes scrollPulse { 0%, 100% { opacity: .3; transform: scaleY(1); } 50% { opacity: .7; transform: scaleY(1.3); } }
 
-  /* Featured cards */
   .featured { padding: 6rem 0; }
   .featured__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-
-  .card {
-    display: block; padding: 2rem; border-radius: var(--radius-card);
-    background: var(--card-bg); border: 1px solid var(--border);
-    backdrop-filter: blur(18px); position: relative; overflow: hidden;
-    transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease-out, border-color .3s ease-out, background .3s ease-out;
-  }
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(255,255,255,.08), 0 0 0 1px rgba(255,255,255,.06) inset;
-    border-color: rgba(255,255,255,.12);
-    background: rgba(255,255,255,.04);
-  }
-  body.light .card:hover {
-    box-shadow: 0 12px 40px rgba(0,0,0,.08);
-    border-color: rgba(0,0,0,.12);
-    background: rgba(0,0,0,.03);
-  }
+  .card { display: block; padding: 2rem; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(18px); position: relative; overflow: hidden; transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease-out, border-color .3s ease-out, background .3s ease-out; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(255,255,255,.08), 0 0 0 1px rgba(255,255,255,.06) inset; border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.04); }
+  body.light .card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.08); border-color: rgba(0,0,0,.12); background: rgba(0,0,0,.03); }
   .card__icon { margin-bottom: 1.5rem; color: var(--text-secondary); transition: color .3s ease-out; }
   .card:hover .card__icon { color: var(--primary); }
   .card__title { font-family: var(--font-serif); font-weight: 400; font-size: 1.3rem; letter-spacing: .02em; margin-bottom: .75rem; }
@@ -173,26 +159,16 @@ import bandPhoto from '../assets/аватаркагруппы.png';
   .card__arrow { display: inline-block; font-size: 1.2rem; color: var(--text-secondary); transition: color .3s ease-out, transform .3s cubic-bezier(.34,1.56,.64,1); }
   .card:hover .card__arrow { color: var(--primary); transform: translateX(6px); }
 
-  /* CTA */
   .cta { padding: 6rem 0; }
   .cta__inner { text-align: center; max-width: 500px; margin: 0 auto; padding: 3rem; border-radius: var(--radius-lg); background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(18px); }
   .cta__title { font-family: var(--font-serif); font-weight: 300; font-size: 1.8rem; letter-spacing: .02em; margin-bottom: .75rem; }
   .cta__text { font-size: .85rem; font-weight: 300; color: var(--text-secondary); line-height: 1.7; margin-bottom: 2rem; }
   .cta__form { display: flex; gap: .5rem; max-width: 400px; margin: 0 auto; }
-  .cta__input {
-    flex: 1; padding: .85rem 1.2rem; font-family: var(--font-sans); font-size: .85rem;
-    font-weight: 300; color: var(--primary); background: rgba(255,255,255,.03);
-    border: 1px solid var(--border); border-radius: var(--radius-input); outline: none;
-    transition: border-color .3s ease-out, box-shadow .3s ease-out, background .3s ease-out;
-  }
+  .cta__input { flex: 1; padding: .85rem 1.2rem; font-family: var(--font-sans); font-size: .85rem; font-weight: 300; color: var(--primary); background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: var(--radius-input); outline: none; transition: border-color .3s ease-out, box-shadow .3s ease-out, background .3s ease-out; }
   body.light .cta__input { background: rgba(0,0,0,.03); }
   .cta__input::placeholder { color: rgba(255,255,255,.25); }
   body.light .cta__input::placeholder { color: rgba(0,0,0,.25); }
-  .cta__input:focus {
-    border-color: rgba(255,255,255,.25);
-    box-shadow: 0 0 0 3px rgba(255,255,255,.05), 0 0 20px rgba(255,255,255,.06);
-    background: rgba(255,255,255,.05);
-  }
+  .cta__input:focus { border-color: rgba(255,255,255,.25); box-shadow: 0 0 0 3px rgba(255,255,255,.05), 0 0 20px rgba(255,255,255,.06); background: rgba(255,255,255,.05); }
   body.light .cta__input:focus { background: rgba(0,0,0,.05); }
   .cta__message { margin-top: 1rem; font-size: .8rem; font-weight: 300; opacity: 0; transition: opacity .3s ease-out; }
 

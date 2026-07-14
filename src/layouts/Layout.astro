@@ -17,6 +17,7 @@ const year = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#090909" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -52,7 +53,7 @@ const year = new Date().getFullYear();
       <div class="footer__inner">
         <span class="footer__logo-text">CLEANICE</span>
         <div class="footer__links">
-          <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
         <span class="footer__copy">&copy; {year} Cleanice</span>
       </div>
@@ -60,7 +61,6 @@ const year = new Date().getFullYear();
     )}
 
     <script is:inline define:vars={{ year }}>
-      // ── i18n ──
       const i18n = {
         en: {
           nav_home: 'Home', nav_about: 'About', nav_music: 'Music',
@@ -85,7 +85,8 @@ const year = new Date().getFullYear();
           releases_title: 'Releases', filter_all: 'All', filter_albums: 'Albums', filter_singles: 'Singles',
           album_date: year + ' — In progress', not_found: 'Nothing found yet',
           player_tracklist: 'Tracklist', player_desc: 'Our debut album is currently in the writing process. Nü metal, ' + year + '. Hard but clean.',
-          coming_soon: 'Coming soon', not_found_title: 'Lost in silence', not_found_text: "This page doesn't exist. Maybe it was never meant to.", not_found_btn: 'Back to home',
+          coming_soon: 'Coming soon',
+          not_found_title: 'Lost in silence', not_found_text: "This page doesn't exist. Maybe it was never meant to.", not_found_btn: 'Back to home',
           footer_copy: '© ' + year + ' Cleanice',
         },
         ru: {
@@ -111,7 +112,8 @@ const year = new Date().getFullYear();
           releases_title: 'Релизы', filter_all: 'Все', filter_albums: 'Альбомы', filter_singles: 'Синглы',
           album_date: year + ' — В процессе', not_found: 'Ничего не найдено',
           player_tracklist: 'Трек-лист', player_desc: 'Наш дебютный альбом сейчас в процессе написания. Ню-метал, ' + year + '. Жёстко, но чисто.',
-          coming_soon: 'Скоро', not_found_title: 'Потерялись в тишине', not_found_text: 'Этой страницы не существует. Может, она никогда и не была предназначена.', not_found_btn: 'На главную',
+          coming_soon: 'Скоро',
+          not_found_title: 'Потерялись в тишине', not_found_text: 'Этой страницы не существует. Может, она никогда и не была предназначена.', not_found_btn: 'На главную',
           footer_copy: '© ' + year + ' Cleanice',
         }
       };
@@ -134,41 +136,26 @@ const year = new Date().getFullYear();
       function setLang(lang) {
         localStorage.setItem('cleanice_lang', lang);
         document.documentElement.lang = lang === 'ru' ? 'ru' : 'en';
-
         document.querySelectorAll('[data-i18n]').forEach((el, i) => {
           const key = el.getAttribute('data-i18n');
           const newText = i18n[lang][key];
-          if (newText && newText !== el.textContent) {
-            smoothText(el, newText, i * 25);
-          }
+          if (newText && newText !== el.textContent) smoothText(el, newText, i * 25);
         });
-
         document.querySelectorAll('[data-i18n-placeholder]').forEach((el, i) => {
           const key = el.getAttribute('data-i18n-placeholder');
-          if (i18n[lang][key]) {
-            setTimeout(() => { el.placeholder = i18n[lang][key]; }, i * 25);
-          }
+          if (i18n[lang][key]) setTimeout(() => { el.placeholder = i18n[lang][key]; }, i * 25);
         });
-
-        document.querySelectorAll('[data-i18n-value]').forEach(el => {
-          const key = el.getAttribute('data-i18n-value');
-          if (i18n[lang][key]) el.value = i18n[lang][key];
-        });
-
         const langBtn = document.getElementById('langSwitcher');
-        if (langBtn) {
-          smoothText(langBtn, lang === 'en' ? 'EN' : 'RU', 0);
-        }
+        if (langBtn) smoothText(langBtn, lang === 'en' ? 'EN' : 'RU', 0);
       }
 
-      // ── Theme ──
       function getTheme() { return localStorage.getItem('cleanice_theme') || 'dark'; }
       function setTheme(theme) {
         localStorage.setItem('cleanice_theme', theme);
         document.body.classList.toggle('light', theme === 'light');
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#F5F3EF' : '#090909');
       }
 
-      // ── Init ──
       setLang(getLang());
       setTheme(getTheme());
 
@@ -191,12 +178,10 @@ const year = new Date().getFullYear();
     --border: rgba(255,255,255,.08);
     --card-bg: rgba(255,255,255,.02);
     --nav-bg: rgba(18,18,18,.75);
-
     --radius-card: 18px;
     --radius-btn: 12px;
     --radius-input: 10px;
     --radius-lg: 24px;
-
     --font-serif: 'Instrument Serif', Georgia, serif;
     --font-sans: 'Inter', system-ui, sans-serif;
   }
@@ -217,8 +202,6 @@ const year = new Date().getFullYear();
   body.light .btn--primary { background: rgba(0,0,0,.05); border: 1px solid rgba(0,0,0,.12); color: #111; }
   body.light .btn--primary:hover { background: rgba(0,0,0,.1); box-shadow: 0 0 30px rgba(0,0,0,.08); }
   body.light .btn--ghost { color: var(--text-secondary); }
-  body.light h1, body.light h2, body.light h3, body.light h4 { color: #111; }
-  body.light .hero__title-letter:hover { text-shadow: 0 0 12px rgba(0,0,0,.15), 0 0 24px rgba(0,0,0,.1); }
   body.light ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); }
   body.light ::-webkit-scrollbar-track { background: var(--background); }
 
@@ -247,9 +230,36 @@ const year = new Date().getFullYear();
   main { min-height: calc(100vh - 200px); }
   a { color: inherit; text-decoration: none; }
 
-  h1, h2, h3, h4, .hero__title, .hero__title-letter, .footer__logo-text, .nav__logo-letter {
-    user-select: none;
-    -webkit-user-select: none;
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Skip to content */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); border: 0;
+  }
+  .sr-only:focus {
+    position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
+    z-index: 99999; padding: .5rem 1rem;
+    background: var(--primary); color: var(--background);
+    border-radius: var(--radius-btn);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .page-transition { display: none; }
+    .grain { display: none; }
+    .glow { display: none; }
   }
 
   .section-title {
@@ -296,7 +306,7 @@ const year = new Date().getFullYear();
   }
   @keyframes glowPulse { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
 
-  /* Nav — Dynamic Island */
+  /* Nav */
   .nav {
     position: fixed; top: 1rem; left: 50%; z-index: 100;
     display: grid; grid-template-columns: 30px 1fr 30px; align-items: center; justify-content: center;
@@ -335,7 +345,7 @@ const year = new Date().getFullYear();
 
   .nav__link {
     font-size: .72rem; font-weight: 300; letter-spacing: .06em; text-transform: uppercase;
-    color: var(--text-secondary); transition: color .3s ease-out, text-shadow .3s ease-out;
+    color: var(--text-secondary); transition: color .3s ease-out;
     position: relative; padding: .15rem 0;
   }
   .nav__link--active { color: var(--primary); }
@@ -344,7 +354,7 @@ const year = new Date().getFullYear();
     background: var(--primary); transition: width .3s cubic-bezier(.22,1,.36,1);
   }
   .nav__link--active::after { width: 100%; }
-  .nav__link:hover { color: var(--primary); text-shadow: 0 0 16px rgba(255,255,255,.2); }
+  .nav__link:hover { color: var(--primary); }
   .nav__link:hover::after { width: 100%; }
 
   /* Buttons */
@@ -358,7 +368,7 @@ const year = new Date().getFullYear();
   .btn--primary { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); color: white; }
   .btn--primary:hover { background: rgba(255,255,255,.1); box-shadow: 0 0 24px rgba(255,255,255,.12); border-color: rgba(255,255,255,.2); }
   .btn--ghost { background: transparent; color: var(--text-secondary); }
-  .btn--ghost:hover { color: var(--primary); text-shadow: 0 0 12px rgba(255,255,255,.2); }
+  .btn--ghost:hover { color: var(--primary); }
   .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
   /* Footer */
@@ -368,8 +378,7 @@ const year = new Date().getFullYear();
   .footer__links { display: flex; gap: 2rem; }
   .footer__links a { font-size: .8rem; font-weight: 300; color: var(--text-secondary); letter-spacing: .04em; transition: color .25s ease-out, transform .25s ease-out; display: inline-block; }
   .footer__links a:hover { color: var(--primary); transform: translateY(-2px); }
-  .footer__copy { font-size: .75rem; color: rgba(255,255,255,.25); letter-spacing: .04em; }
-  body.light .footer__copy { color: rgba(0,0,0,.3); }
+  .footer__copy { font-size: .75rem; color: var(--text-secondary); opacity: .4; letter-spacing: .04em; }
 
   /* Animations */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -382,7 +391,7 @@ const year = new Date().getFullYear();
   .reveal--scale { opacity: 0; transform: scale(.97); transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); }
   .reveal.is-visible, .reveal--blur.is-visible, .reveal--scale.is-visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 
-  /* Entrance (hero load) */
+  /* Entrance */
   .anim-fade-in { animation: fadeIn .5s cubic-bezier(.22,1,.36,1) both; }
   .anim-fade-up { animation: fadeUp .6s cubic-bezier(.22,1,.36,1) both; }
   .anim-blur-in { animation: blurIn .8s cubic-bezier(.22,1,.36,1) both; }
@@ -406,6 +415,8 @@ const year = new Date().getFullYear();
 </style>
 
 <script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -414,22 +425,26 @@ const year = new Date().getFullYear();
       }
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal, .reveal--blur, .reveal--scale').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal, .reveal--blur, .reveal--scale').forEach(el => {
+    if (prefersReducedMotion) { el.classList.add('is-visible'); }
+    else { observer.observe(el); }
+  });
 
   document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
   document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
 
-  document.querySelectorAll('a[href^="/"]').forEach(link => {
-    link.addEventListener('click', e => {
-      const href = e.currentTarget.getAttribute('href');
-      if (href && href !== window.location.pathname) {
-        e.preventDefault();
-        const t = document.querySelector('.page-transition');
-        t.style.animation = 'none'; t.style.opacity = '0';
-        void t.offsetWidth;
-        t.style.animation = 'pageOut .6s cubic-bezier(.22,1,.36,1) forwards';
-        setTimeout(() => { window.location.href = href; }, 550);
-      }
-    });
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement).closest('a[href^="/"]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (href && href !== window.location.pathname) {
+      e.preventDefault();
+      if (prefersReducedMotion) { window.location.href = href; return; }
+      const t = document.querySelector('.page-transition');
+      t.style.animation = 'none'; t.style.opacity = '0';
+      void t.offsetWidth;
+      t.style.animation = 'pageOut .6s cubic-bezier(.22,1,.36,1) forwards';
+      setTimeout(() => { window.location.href = href; }, 550);
+    }
   });
 </script>
