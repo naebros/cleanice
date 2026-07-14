@@ -6,9 +6,9 @@ import bandPhoto from '../assets/аватаркагруппы.png';
 <Layout title="Cleanice — About" description="Cleanice — ню-метал группа">
   <section class="about-hero">
     <div class="section-container">
-      <p class="about-hero__label anim-fade-up delay-1" data-i18n="about_label">Who we are</p>
-      <h1 class="about-hero__title anim-blur-in delay-2"><span data-i18n="about_title">About</span><br/>Cleanice</h1>
-      <p class="about-hero__sub anim-fade-up delay-3" data-i18n="about_sub">Nü metal. Contrast. Purity.</p>
+      <p class="about-hero__label fade-in" style="--delay:.2s" data-i18n="about_label">Who we are</p>
+      <h1 class="about-hero__title fade-in" style="--delay:.4s"><span data-i18n="about_title">About</span><br/>Cleanice</h1>
+      <p class="about-hero__sub fade-in" style="--delay:.6s" data-i18n="about_sub">Nü metal. Contrast. Purity.</p>
     </div>
   </section>
 
@@ -20,9 +20,9 @@ import bandPhoto from '../assets/аватаркагруппы.png';
           <p data-i18n="about_story_p1">It all started with a guitar and a dream. Senu, a 14-year-old guitarist, had always imagined creating his own album — a world of sound built from scratch. One day he called his friend Nikita, a 15-year-old bassist, and said: "Let's make something real." That conversation became Cleanice.</p>
           <p data-i18n="about_story_p2">Now we're writing our debut album "First Look" — our first look at how nü metal should sound. It's still taking shape, note by note, but every track carries the weight of that first conversation.</p>
         </div>
-        <div class="about-story__visual reveal" style="transition-delay:.15s">
+        <div class="about-story__visual reveal" style="--delay:.15s">
           <div class="about-story__frame">
-            <img src={bandPhoto.src} alt="Cleanice" class="about-story__album" loading="lazy" />
+            <img src={bandPhoto.src} alt="Cleanice" class="about-story__album" loading="lazy" draggable="false" />
           </div>
         </div>
       </div>
@@ -33,22 +33,22 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     <div class="section-container">
       <h2 class="section-title reveal" data-i18n="values_title">What Drives Us</h2>
       <div class="values-grid">
-        <div class="value-card reveal">
+        <div class="value-card reveal" style="--delay:0s">
           <span class="value-card__number">01</span>
           <h3 class="value-card__title" data-i18n="v1_title">Contrast</h3>
           <p class="value-card__text" data-i18n="v1_text">Heaviness and purity. Noise and silence.</p>
         </div>
-        <div class="value-card reveal" style="transition-delay:.1s">
+        <div class="value-card reveal" style="--delay:.1s">
           <span class="value-card__number">02</span>
           <h3 class="value-card__title" data-i18n="v2_title">Energy</h3>
           <p class="value-card__text" data-i18n="v2_text">Nü metal is movement.</p>
         </div>
-        <div class="value-card reveal" style="transition-delay:.2s">
+        <div class="value-card reveal" style="--delay:.2s">
           <span class="value-card__number">03</span>
           <h3 class="value-card__title" data-i18n="v3_title">Purity</h3>
           <p class="value-card__text" data-i18n="v3_text">Cleanice isn't just a name.</p>
         </div>
-        <div class="value-card reveal" style="transition-delay:.3s">
+        <div class="value-card reveal" style="--delay:.3s">
           <span class="value-card__number">04</span>
           <h3 class="value-card__title" data-i18n="v4_title">Freshness</h3>
           <p class="value-card__text" data-i18n="v4_text">First album — first look.</p>
@@ -61,14 +61,14 @@ import bandPhoto from '../assets/аватаркагруппы.png';
     <div class="section-container">
       <h2 class="section-title reveal" data-i18n="members_title">Members</h2>
       <div class="members-grid">
-        <div class="member-card reveal">
+        <div class="member-card reveal" style="--delay:0s">
           <div class="member-card__photo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
           <h3 class="member-card__name">Senu O</h3>
           <p class="member-card__role" data-i18n="m1_role">Vocals / Guitar / Frontman / DJ</p>
         </div>
-        <div class="member-card reveal" style="transition-delay:.1s">
+        <div class="member-card reveal" style="--delay:.1s">
           <div class="member-card__photo">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
@@ -87,39 +87,50 @@ import bandPhoto from '../assets/аватаркагруппы.png';
 </Layout>
 
 <style>
-  .about-hero { min-height: 70vh; display: flex; align-items: center; padding-top: 6rem; text-align: center; }
-  .about-hero__label { font-size: .75rem; font-weight: 300; letter-spacing: .15em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 1.5rem; }
-  .about-hero__title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(3rem, 8vw, 6rem); line-height: 1; letter-spacing: .04em; margin-bottom: 1.5rem; }
-  .about-hero__sub { font-size: 1rem; font-weight: 300; color: var(--text-secondary); line-height: 1.7; max-width: 500px; margin: 0 auto; }
+  .about-hero { min-height: min(70vh, 500px); display: flex; align-items: center; padding-top: 5rem; text-align: center; }
+  .about-hero__label { font-size: .7rem; font-weight: 300; letter-spacing: .15em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 1rem; }
+  .about-hero__title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(2.5rem, 8vw, 6rem); line-height: 1; letter-spacing: .04em; margin-bottom: 1rem; }
+  .about-hero__sub { font-size: .9rem; font-weight: 300; color: var(--text-secondary); line-height: 1.7; max-width: 500px; margin: 0 auto; }
 
-  .about-story { padding: 6rem 0; }
-  .about-story__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-  .about-story__text p { font-size: .95rem; font-weight: 300; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
-  .about-story__frame { aspect-ratio: 1; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; }
+  .about-story { padding: 4rem 0; }
+  .about-story__grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
+  .about-story__text p { font-size: .9rem; font-weight: 300; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.25rem; }
+  .about-story__frame { aspect-ratio: 1; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); overflow: hidden; max-width: 400px; margin: 0 auto; }
   .about-story__album { width: 100%; height: 100%; object-fit: cover; }
 
-  .about-values { padding: 6rem 0; }
-  .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-  .value-card { padding: 2rem; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); transition: all .35s cubic-bezier(.22,1,.36,1); }
+  .about-values { padding: 4rem 0; }
+  .values-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .value-card { padding: 1.5rem; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); transition: all .35s cubic-bezier(.22,1,.36,1); }
   .value-card:hover { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); box-shadow: 0 0 10px rgba(255,255,255,.08); }
-  body.light .value-card:hover { background: rgba(0,0,0,.04); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+  body.light .value-card:hover { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.12); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
   .value-card__number { font-family: var(--font-serif); font-size: .85rem; color: rgba(255,255,255,.2); letter-spacing: .1em; }
   body.light .value-card__number { color: rgba(0,0,0,.2); }
-  .value-card__title { font-family: var(--font-serif); font-weight: 400; font-size: 1.2rem; letter-spacing: .02em; margin: .75rem 0; }
-  .value-card__text { font-size: .85rem; font-weight: 300; color: var(--text-secondary); line-height: 1.7; }
+  .value-card__title { font-family: var(--font-serif); font-weight: 400; font-size: 1.1rem; letter-spacing: .02em; margin: .5rem 0; }
+  .value-card__text { font-size: .82rem; font-weight: 300; color: var(--text-secondary); line-height: 1.7; }
 
-  .about-members { padding: 6rem 0; }
-  .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-  .member-card { text-align: center; padding: 2.5rem 2rem; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); transition: all .35s cubic-bezier(.22,1,.36,1); }
+  .about-members { padding: 4rem 0; }
+  .members-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .member-card { text-align: center; padding: 2rem 1.5rem; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border); transition: all .35s cubic-bezier(.22,1,.36,1); }
   .member-card:hover { background: rgba(255,255,255,.04); box-shadow: 0 0 10px rgba(255,255,255,.08); }
   body.light .member-card:hover { background: rgba(0,0,0,.04); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-  .member-card__photo { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,.04); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: rgba(255,255,255,.2); }
+  .member-card__photo { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,.04); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; color: rgba(255,255,255,.2); }
   body.light .member-card__photo { background: rgba(0,0,0,.04); color: rgba(0,0,0,.2); }
-  .member-card__name { font-family: var(--font-serif); font-weight: 400; font-size: 1.1rem; letter-spacing: .02em; margin-bottom: .5rem; }
-  .member-card__role { font-size: .8rem; font-weight: 300; color: var(--text-secondary); letter-spacing: .04em; }
+  .member-card__name { font-family: var(--font-serif); font-weight: 400; font-size: 1.1rem; letter-spacing: .02em; margin-bottom: .4rem; }
+  .member-card__role { font-size: .78rem; font-weight: 300; color: var(--text-secondary); letter-spacing: .04em; }
 
-  .about-quote { padding: 6rem 0; text-align: center; }
-  .about-quote__text { font-family: var(--font-serif); font-weight: 300; font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.6; letter-spacing: .02em; color: var(--text-secondary); font-style: italic; }
+  .about-quote { padding: 4rem 0; text-align: center; }
+  .about-quote__text { font-family: var(--font-serif); font-weight: 300; font-size: clamp(1.2rem, 3vw, 2rem); line-height: 1.6; letter-spacing: .02em; color: var(--text-secondary); font-style: italic; }
 
-  @media (max-width: 768px) { .about-story__grid { grid-template-columns: 1fr; gap: 2rem; } .members-grid { grid-template-columns: 1fr; } }
+  @media (min-width: 768px) {
+    .about-story { padding: 6rem 0; }
+    .about-story__grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .about-story__frame { max-width: none; }
+    .about-values { padding: 6rem 0; }
+    .values-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .value-card { padding: 2rem; }
+    .about-members { padding: 6rem 0; }
+    .members-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .member-card { padding: 2.5rem 2rem; }
+    .about-quote { padding: 6rem 0; }
+  }
 </style>
