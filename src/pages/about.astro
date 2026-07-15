@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import bandPhoto from '../assets/аватаркагруппы.png';
+import bandPhoto from '../assets/band-photo.png';
 ---
 
 <Layout title="Cleanice — About" description="Cleanice — ню-метал группа">
@@ -81,10 +81,38 @@ import bandPhoto from '../assets/аватаркагруппы.png';
 
   <section class="about-quote">
     <div class="section-container">
-      <blockquote class="about-quote__text reveal--blur">"We don't make music to fill silence.<br/>We make silence to fill music."</blockquote>
+      <blockquote class="about-quote__text reveal--blur" id="quoteBlock">"We don't make music to fill silence.<br/>We make silence to fill music."</blockquote>
+      <div class="quote-tooltip" id="quoteTooltip"></div>
     </div>
   </section>
 </Layout>
+
+<script>
+  import { getLang } from '../scripts/i18n';
+
+  const quote = document.getElementById('quoteBlock')!;
+  const tooltip = document.getElementById('quoteTooltip')!;
+  const translations: Record<string, string> = {
+    en: "We don't make music to fill silence. We make silence to fill music.",
+    ru: 'Мы не делаем музыку, чтобы заполнить тишину. Мы делаем тишину, чтобы наполнить музыкой.'
+  };
+
+  quote.addEventListener('mouseenter', () => {
+    const lang = getLang();
+    if (lang === 'en') return;
+    tooltip.textContent = translations[lang] || translations.ru;
+    tooltip.classList.add('visible');
+  });
+
+  quote.addEventListener('mousemove', (e) => {
+    tooltip.style.left = e.clientX + 16 + 'px';
+    tooltip.style.top = e.clientY - 10 + 'px';
+  });
+
+  quote.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+  });
+</script>
 
 <style>
   .about-hero { min-height: min(70vh, 500px); display: flex; align-items: center; padding-top: 5rem; text-align: center; }
@@ -118,8 +146,11 @@ import bandPhoto from '../assets/аватаркагруппы.png';
   .member-card__name { font-family: var(--font-serif); font-weight: 400; font-size: 1.1rem; letter-spacing: .02em; margin-bottom: .4rem; }
   .member-card__role { font-size: .78rem; font-weight: 300; color: var(--text-secondary); letter-spacing: .04em; }
 
-  .about-quote { padding: 4rem 0; text-align: center; }
-  .about-quote__text { font-family: var(--font-serif); font-weight: 300; font-size: clamp(1.2rem, 3vw, 2rem); line-height: 1.6; letter-spacing: .02em; color: var(--text-secondary); font-style: italic; }
+  .about-quote { padding: 4rem 0; text-align: center; position: relative; }
+  .about-quote__text { font-family: var(--font-serif); font-weight: 300; font-size: clamp(1.2rem, 3vw, 2rem); line-height: 1.6; letter-spacing: .02em; color: var(--text-secondary); font-style: italic; cursor: default; }
+  .quote-tooltip { position: fixed; z-index: 1000; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .2s ease-out, transform .2s ease-out; background: rgba(18,18,18,.95); border: 1px solid var(--border); border-radius: 12px; padding: .6rem 1rem; font-family: var(--font-serif); font-size: .85rem; font-style: italic; color: var(--text-secondary); max-width: 320px; line-height: 1.5; backdrop-filter: blur(16px); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+  body.light .quote-tooltip { background: rgba(245,243,239,.95); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+  .quote-tooltip.visible { opacity: 1; transform: translateY(0); }
 
   @media (min-width: 768px) {
     .about-story { padding: 6rem 0; }

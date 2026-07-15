@@ -4,10 +4,8 @@ import albumCover from '../assets/album_photos/First Look.png';
 ---
 
 <Layout title="Music — Cleanice" description="Cleanice — ню-метал. Дебютный альбом First Look.">
-  <section class="music-hero">
-    <div class="music-hero__bg">
-      <img src={albumCover.src} alt="" class="music-hero__bg-img" loading="eager" draggable="false" />
-    </div>
+  <section class="music-hero" style={`--music-bg: url('${albumCover.src}')`}>
+    <div class="music-hero__bg"></div>
     <div class="section-container">
       <p class="music-hero__label fade-in" style="--delay:.2s" data-i18n="music_label">Discography</p>
       <h1 class="music-hero__title fade-in" style="--delay:.4s" data-i18n="music_title">Music</h1>
@@ -51,7 +49,7 @@ import albumCover from '../assets/album_photos/First Look.png';
   </section>
 
   <!-- Player Modal -->
-  <div class="player-modal" id="playerModal">
+  <div class="player-modal" id="playerModal" role="dialog" aria-modal="true" aria-label="Player">
     <div class="player-modal__backdrop" id="closePlayer"></div>
     <div class="player-modal__content">
       <button class="player-modal__close" id="closePlayerBtn" aria-label="Close">
@@ -67,9 +65,9 @@ import albumCover from '../assets/album_photos/First Look.png';
         <div class="player-modal__tracks">
           <div class="track track--active"><span class="track__num">01</span><div class="track__info"><span class="track__name">War</span><span class="track__duration">5:45</span></div></div>
           <div class="track track--active"><span class="track__num">02</span><div class="track__info"><span class="track__name">Slept</span><span class="track__duration">3:00</span></div></div>
-          <div class="track track--locked"><span class="track__num">03</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <div class="track track--locked"><span class="track__num">04</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <div class="track track--locked"><span class="track__num">05</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="track track--locked" aria-disabled="true"><span class="track__num">03</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="track track--locked" aria-disabled="true"><span class="track__num">04</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="track track--locked" aria-disabled="true"><span class="track__num">05</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
         </div>
       </div>
     </div>
@@ -101,17 +99,18 @@ import albumCover from '../assets/album_photos/First Look.png';
       const el = card as HTMLElement;
       if (show) {
         el.style.display = '';
+        el.classList.remove('release-card--hide', 'release-card--enter');
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-          el.style.transition = 'opacity .4s ease-out, transform .4s ease-out';
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        }, i * 80);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTimeout(() => { el.classList.add('release-card--enter'); }, i * 80);
+          });
+        });
         found++;
       } else {
-        el.style.transition = 'opacity .25s ease-out';
-        el.style.opacity = '0';
+        el.classList.remove('release-card--enter');
+        el.classList.add('release-card--hide');
         setTimeout(() => { el.style.display = 'none'; }, 250);
       }
     });
@@ -120,41 +119,57 @@ import albumCover from '../assets/album_photos/First Look.png';
   });
 
   const modal = document.getElementById('playerModal')!;
-  document.getElementById('openPlayer')!.addEventListener('click', () => {
+  const openBtn = document.getElementById('openPlayer')!;
+  let lastFocused: HTMLElement | null = null;
+
+  function getFocusable() {
+    return Array.from(modal.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    ));
+  }
+
+  function openModal() {
+    lastFocused = document.activeElement as HTMLElement;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
-  });
-  document.getElementById('closePlayer')!.addEventListener('click', closeModal);
-  document.getElementById('closePlayerBtn')!.addEventListener('click', closeModal);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+    const focusable = getFocusable();
+    if (focusable.length) focusable[0].focus();
+  }
+
   function closeModal() {
     modal.classList.remove('open');
     document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
   }
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!prefersReducedMotion) {
-    const musicBg = document.querySelector('.music-hero__bg-img') as HTMLElement;
-    if (musicBg) {
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            musicBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }, { passive: true });
+  openBtn.addEventListener('click', openModal);
+  document.getElementById('closePlayer')!.addEventListener('click', closeModal);
+  document.getElementById('closePlayerBtn')!.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) {
+      closeModal();
+      return;
     }
-  }
+    if (e.key === 'Tab' && modal.classList.contains('open')) {
+      const focusable = getFocusable();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
 </script>
 
 <style>
   .music-hero { min-height: min(50vh, 400px); display: flex; align-items: center; padding-top: 5rem; text-align: center; position: relative; overflow: hidden; }
-  .music-hero__bg { position: absolute; inset: 0; z-index: 0; }
-  .music-hero__bg-img { width: 100%; height: 140%; object-fit: cover; opacity: .12; filter: grayscale(1) contrast(1.3); will-change: transform; }
-  body.light .music-hero__bg-img { opacity: .08; filter: grayscale(1) contrast(.8); }
+  .music-hero__bg { position: absolute; inset: 0; z-index: 0; background-image: var(--music-bg); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: .12; filter: grayscale(1) contrast(1.3); }
+  body.light .music-hero__bg { opacity: .08; filter: grayscale(1) contrast(.8); }
   .music-hero__label { font-size: .7rem; font-weight: 300; letter-spacing: .15em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 1rem; position: relative; z-index: 1; }
   .music-hero__title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(2.5rem, 8vw, 6rem); line-height: 1; letter-spacing: .04em; position: relative; z-index: 1; }
 
@@ -208,13 +223,22 @@ import albumCover from '../assets/album_photos/First Look.png';
   .player-modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s ease-out; }
   .player-modal.open { opacity: 1; pointer-events: all; }
   .player-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); }
+  body.light .player-modal__backdrop { background: rgba(255,255,255,.5); }
   .player-modal__content {
     position: relative; display: flex; gap: 2rem; max-width: 640px; width: 90vw; max-height: 85vh;
     background: rgba(18,18,18,.95); border: 1px solid var(--border); border-radius: var(--radius-card);
     padding: 2rem; backdrop-filter: blur(24px); overflow-y: auto;
     transform: translateY(16px) scale(.97); transition: transform .4s cubic-bezier(.22,1,.36,1);
   }
-  body.light .player-modal__content { background: rgba(245,243,239,.95); }
+  body.light .player-modal__content { background: rgba(245,243,239,.95); color: var(--text); }
+  body.light .player-modal__title { color: var(--text); }
+  body.light .player-modal__close:hover { background: rgba(0,0,0,.05); }
+  body.light .release-card__play { color: var(--primary); background: rgba(0,0,0,.08); border-color: rgba(0,0,0,.15); }
+  body.light .release-card__play:hover { background: rgba(0,0,0,.15); box-shadow: 0 0 20px rgba(0,0,0,.1); }
+  body.light .track__name { color: var(--text); }
+  body.light .track__num { color: var(--text-secondary); }
+  body.light .track__duration { color: var(--text-secondary); }
+  body.light .player-modal__tracklist-label { color: var(--text-secondary); }
   .player-modal.open .player-modal__content { transform: translateY(0) scale(1); }
 
   .player-modal__close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: .5rem; border-radius: 50%; transition: color .25s ease-out, background .25s ease-out; }
@@ -238,6 +262,16 @@ import albumCover from '../assets/album_photos/First Look.png';
   .track__name { font-size: .85rem; font-weight: 300; }
   .track__duration { font-size: .75rem; font-weight: 300; color: var(--text-secondary); }
   .track__lock { color: var(--text-secondary); opacity: .5; }
+
+  .release-card--enter {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: opacity .4s ease-out, transform .4s ease-out;
+  }
+  .release-card--hide {
+    opacity: 0;
+    transition: opacity .25s ease-out;
+  }
 
   @media (max-width: 600px) {
     .player-modal__content { flex-direction: column; align-items: center; padding: 1.5rem; gap: 1.5rem; }

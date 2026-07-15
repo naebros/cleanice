@@ -1,43 +1,39 @@
-# Astro Starter Kit: Minimal
+# Cleanice
 
-```sh
-npm create astro@latest -- --template minimal
+Лендинг для ню-метал группы Cleanice. Сайт для продвижения дебютного альбома «First Look».
+
+## Стек
+
+- **Фреймворк:** Astro 7
+- **Язык:** TypeScript (strict)
+- **Шрифты:** PT Serif (заголовки) + Inter (текст)
+- **Формы:** Formspree
+- **Деплой:** Static site
+
+## Возможности
+
+- Двуязычность (EN/RU) с переключением на клиенте
+- Тёмная/светлая тема
+- Анимации: parallax, scroll-reveal, page transitions
+- Фильтрация релизов
+- Модалка плеера с focus trap
+- Film grain, glassmorphism эффекты
+- Адаптивный дизайн
+
+## Команды
+
+```bash
+npm run dev      # Запуск dev-сервера
+npm run build    # Сборка
+npm run preview  # Предпросмотр сборки
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Структура
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+src/
+├── assets/          # Изображения
+├── layouts/         # Layout.astro — общий layout
+├── pages/           # Страницы: index, about, music, 404
+└── scripts/         # Утилиты: i18n, parallax
+```
