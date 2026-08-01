@@ -28,8 +28,8 @@ import albumCover from '../assets/album_photos/First Look.png';
           <div class="release-card__cover">
             <img src={albumCover.src} alt="First Look — Cleanice" class="release-card__artwork-img" loading="lazy" draggable="false" />
             <div class="release-card__overlay">
-              <button class="release-card__play" aria-label="Play" id="openPlayer">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <button class="release-card__play" aria-label="Show locked tracklist" id="openPlayer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </button>
             </div>
           </div>
@@ -49,7 +49,7 @@ import albumCover from '../assets/album_photos/First Look.png';
   </section>
 
   <!-- Player Modal -->
-  <div class="player-modal" id="playerModal" role="dialog" aria-modal="true" aria-label="Player">
+  <div class="player-modal" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="playerTitle" aria-hidden="true" inert>
     <div class="player-modal__backdrop" id="closePlayer"></div>
     <div class="player-modal__content">
       <button class="player-modal__close" id="closePlayerBtn" aria-label="Close">
@@ -57,14 +57,14 @@ import albumCover from '../assets/album_photos/First Look.png';
       </button>
       <div class="player-modal__left">
         <img src={albumCover.src} alt="First Look" class="player-modal__cover" />
-        <h3 class="player-modal__title">First Look</h3>
+        <h3 class="player-modal__title" id="playerTitle">First Look</h3>
         <p class="player-modal__desc" data-i18n="player_desc">Debut album Cleanice. Nü metal.</p>
       </div>
       <div class="player-modal__right">
         <p class="player-modal__tracklist-label" data-i18n="player_tracklist">Tracklist</p>
         <div class="player-modal__tracks">
-          <div class="track track--active"><span class="track__num">01</span><div class="track__info"><span class="track__name">War</span><span class="track__duration">5:45</span></div></div>
-          <div class="track track--active"><span class="track__num">02</span><div class="track__info"><span class="track__name">Slept</span><span class="track__duration">3:00</span></div></div>
+          <div class="track track--locked" aria-disabled="true"><span class="track__num">01</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="track track--locked" aria-disabled="true"><span class="track__num">02</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <div class="track track--locked" aria-disabled="true"><span class="track__num">03</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <div class="track track--locked" aria-disabled="true"><span class="track__num">04</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <div class="track track--locked" aria-disabled="true"><span class="track__num">05</span><div class="track__info"><span class="track__name" data-i18n="coming_soon">Coming soon</span></div><svg class="track__lock" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
@@ -79,11 +79,13 @@ import albumCover from '../assets/album_photos/First Look.png';
   const grid = document.getElementById('releasesGrid')!;
   const notFound = document.getElementById('notFound')!;
   const cards = grid.querySelectorAll('.release-card');
+  let filterRequestId = 0;
 
   filterGroup.addEventListener('click', (e) => {
     const btn = (e.target as HTMLElement).closest('.filter-btn');
     if (!btn) return;
     const filter = btn.dataset.filter;
+    const requestId = ++filterRequestId;
 
     filterGroup.querySelectorAll('.filter-btn').forEach(b => {
       b.classList.remove('filter-btn--active');
@@ -104,14 +106,18 @@ import albumCover from '../assets/album_photos/First Look.png';
         el.style.transform = 'translateY(20px)';
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            setTimeout(() => { el.classList.add('release-card--enter'); }, i * 80);
+            setTimeout(() => {
+              if (requestId === filterRequestId) el.classList.add('release-card--enter');
+            }, i * 80);
           });
         });
         found++;
       } else {
         el.classList.remove('release-card--enter');
         el.classList.add('release-card--hide');
-        setTimeout(() => { el.style.display = 'none'; }, 250);
+        setTimeout(() => {
+          if (requestId === filterRequestId) el.style.display = 'none';
+        }, 250);
       }
     });
 
@@ -130,6 +136,8 @@ import albumCover from '../assets/album_photos/First Look.png';
 
   function openModal() {
     lastFocused = document.activeElement as HTMLElement;
+    modal.setAttribute('aria-hidden', 'false');
+    modal.inert = false;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     const focusable = getFocusable();
@@ -138,6 +146,8 @@ import albumCover from '../assets/album_photos/First Look.png';
 
   function closeModal() {
     modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.inert = true;
     document.body.style.overflow = '';
     if (lastFocused) lastFocused.focus();
   }
