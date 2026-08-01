@@ -27,3 +27,4 @@ pnpm-debug.log*
 # AI tools
 AGENTS.md
 CLAUDE.md
+.vercel
